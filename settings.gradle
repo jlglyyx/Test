@@ -1,2 +1,4 @@
+include ':module_home'
+include ':module_mine'
 include ':app',':common_lib'
 rootProject.name = "Test"

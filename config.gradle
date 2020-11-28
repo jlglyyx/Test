@@ -1,8 +1,9 @@
 ext {
 
     version = [
-            kotlin_version: "1.3.72",
-            lifecycle_version: "2.2.0"
+            kotlin_version   : "1.3.72",
+            lifecycle_version: "2.2.0",
+            arch_version     : "2.1.0",
     ]
 
 
@@ -19,6 +20,54 @@ ext {
     ]
 
     dependencies = [
+
+            "BaseRecyclerViewAdapterHelper" : 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4',
+            "dagger"                        : 'com.google.dagger:dagger:2.11',
+            "dagger-compiler"               : 'com.google.dagger:dagger-compiler:2.11',
+
+
+            //网络请求t
+            "retrofit2"                     : 'com.squareup.retrofit2:retrofit:2.9.0',
+            //retrofit+Gson适配器
+            "converter-gson"                : 'com.squareup.retrofit2:converter-gson:2.1.0',
+            "converter-scalars"             : 'com.squareup.retrofit2:converter-scalars:2.0.2',
+            //rxJava+retrofit适配器
+            "adapter-rxjava"                : 'com.squareup.retrofit2:adapter-rxjava2:2.5.0',
+            "rxjava"                        : 'io.reactivex.rxjava2:rxjava:2.2.20',
+            "rxandroid"                     : 'io.reactivex.rxjava2:rxandroid:2.0.2',
+            "okhttp"                        : 'com.squareup.okhttp3:okhttp:3.1.2',
+            //协程
+            "kotlinx-coroutines-android"    : 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9',
+
+
+            // ViewModel
+            "lifecycle-viewmodel-ktx"       : "androidx.lifecycle:lifecycle-viewmodel-ktx:$version.lifecycle_version",
+            // LiveData
+            "lifecycle-livedata-ktx"        : "androidx.lifecycle:lifecycle-livedata-ktx:$version.lifecycle_version",
+            // Lifecycles only (without ViewModel or LiveData)
+            "lifecycle-runtime-ktx"         : "androidx.lifecycle:lifecycle-runtime-ktx:$version.lifecycle_version",
+            // Saved state module for ViewModel
+            "lifecycle-viewmodel-savedstate": "androidx.lifecycle:lifecycle-viewmodel-savedstate:$version.lifecycle_version",
+            // Annotation processor
+            //noinspection LifecycleAnnotationProcessorWithJava8
+            "lifecycle-compiler"            : "androidx.lifecycle:lifecycle-compiler:$version.lifecycle_version",
+            // alternately - if using Java8, use the following instead of lifecycle-compiler
+            "lifecycle-common-java8"        : "androidx.lifecycle:lifecycle-common-java8:$version.lifecycle_version",
+            // optional - helpers for implementing LifecycleOwner in a Service
+            "lifecycle-service"             : "androidx.lifecycle:lifecycle-service:$version.lifecycle_version",
+            // optional - ProcessLifecycleOwner provides a lifecycle for the whole application process
+            "lifecycle-process"             : "androidx.lifecycle:lifecycle-process:$version.lifecycle_version",
+            // optional - ReactiveStreams support for LiveData
+            "lifecycle-reactivestreams-ktx" : "androidx.lifecycle:lifecycle-reactivestreams-ktx:$version.lifecycle_version",
+            // optional - Test helpers for LiveData
+            "core-testing"                  : "androidx.arch.core:core-testing:$version.arch_version",
+            //app 内容提供者初始化
+            "startup-runtime"               : "androidx.startup:startup-runtime:1.0.0",
+            //loding动画
+            "avi"                           : "com.wang.avi:library:2.1.3",
+            "arouter-api"                   : "com.alibaba:arouter-api:1.5.1",
+            "arouter-compiler"              : "com.alibaba:arouter-compiler:1.5.1",
+            "material"              : "com.google.android.material:material:1.2.1",
 
     ]
 
