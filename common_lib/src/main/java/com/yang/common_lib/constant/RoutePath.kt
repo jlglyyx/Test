@@ -25,7 +25,7 @@ object RoutePath {
 
 
     //main activity
-    const val MAIN_ACTIVITY = "/$MODULE_MAIN/$ACTIVITY/main"
+    const val MAIN_ACTIVITY = "/$MODULE_MAIN/$ACTIVITY/MainActivity"
 
     //main fragment
 
@@ -33,10 +33,14 @@ object RoutePath {
 
 
 
+    //home fragment
+    const val HOME_FRAGMENT = "/$MODULE_HOME/$FRAGMENT/HomeFragment"
+    const val HOME_RECOMMEND_FRAGMENT = "/$MODULE_HOME/$FRAGMENT/RecommendFragment"
 
-    const val HOME_FRAGMENT = "/$MODULE_MINE/$FRAGMENT/home"
 
-    const val MINE_FRAGMENT = "/$MODULE_HOME/$FRAGMENT/mine"
+
+
+    const val MINE_FRAGMENT = "/$MODULE_MINE/$FRAGMENT/MineFragment"
 
 
 }

@@ -2,5 +2,6 @@
 <resources>
     
     <item name="viewPager" type="id"/>
+    <item name="viewPager2" type="id"/>
     <item name="tabLayout" type="id"/>
 </resources>

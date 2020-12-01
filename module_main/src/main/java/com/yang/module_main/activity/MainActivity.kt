@@ -1,10 +1,14 @@
 package com.yang.module_main.activity
 
+import android.util.Log
 import android.widget.Toast
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.alibaba.android.arouter.launcher.ARouter
+import com.google.android.material.tabs.TabLayout
+import com.yang.common_lib.adapter.TabAndViewPagerAdapter
 import com.yang.common_lib.base.activity.BaseActivity
 import com.yang.common_lib.constant.RoutePath
 import com.yang.module_main.R
@@ -12,8 +16,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
 
-    lateinit var fragments:MutableList<Fragment>
-    lateinit var titles:MutableList<String>
+    lateinit var fragments: MutableList<Fragment>
+    lateinit var titles: MutableList<String>
+    lateinit var imgSelect: MutableList<Int>
+    lateinit var imgUnSelect: MutableList<Int>
 
 
     override fun getLayout(): Int {
@@ -24,14 +30,27 @@ class MainActivity : BaseActivity() {
     override fun initView() {
         fragments = mutableListOf()
         titles = mutableListOf()
-        fragments.add(ARouter.getInstance().build(RoutePath.MINE_FRAGMENT).navigation() as Fragment)
-        fragments.add(ARouter.getInstance().build(RoutePath.MINE_FRAGMENT).navigation() as Fragment)
+        imgSelect = mutableListOf()
+        imgUnSelect = mutableListOf()
         fragments.add(ARouter.getInstance().build(RoutePath.HOME_FRAGMENT).navigation() as Fragment)
+        fragments.add(ARouter.getInstance().build(RoutePath.MINE_FRAGMENT).navigation() as Fragment)
+        fragments.add(ARouter.getInstance().build(RoutePath.MINE_FRAGMENT).navigation() as Fragment)
         fragments.add(ARouter.getInstance().build(RoutePath.MINE_FRAGMENT).navigation() as Fragment)
         titles.add("1")
         titles.add("2")
         titles.add("3")
         titles.add("4")
+
+        imgSelect.add(R.drawable.img_home_select)
+        imgSelect.add(R.drawable.img_mine_select)
+        imgSelect.add(R.drawable.img_home_select)
+        imgSelect.add(R.drawable.img_mine_select)
+
+        imgUnSelect.add(R.drawable.img_home_unselect)
+        imgUnSelect.add(R.drawable.img_mine_unselect)
+        imgUnSelect.add(R.drawable.img_home_unselect)
+        imgUnSelect.add(R.drawable.img_mine_unselect)
+
         initTabLayout()
         initViewPager()
     }
@@ -42,35 +61,46 @@ class MainActivity : BaseActivity() {
     }
 
 
-    private fun initTabLayout(){
+    private fun initTabLayout() {
         titles.forEach {
             tabLayout.addTab(tabLayout.newTab().setText(it))
         }
 
+//        for (i in imgUnSelect.indices) {
+//            Log.i("ssss", "initTabLayout: ${i}  ${imgUnSelect[i]}")
+//            tabLayout.getTabAt(i)?.setIcon(imgUnSelect[i])
+//        }
+
+
+        tabLayout.getTabAt(0)?.setIcon(imgSelect[0])
+        tabLayout.getTabAt(1)?.setIcon(imgUnSelect[1])
+        tabLayout.getTabAt(2)?.setIcon(imgUnSelect[2])
+        tabLayout.getTabAt(3)?.setIcon(imgUnSelect[3])
+
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                tab?.setIcon(imgUnSelect[tab.position])
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tab?.setIcon(imgSelect[tab.position])
+            }
+
+        })
+
         tabLayout.setupWithViewPager(viewPager)
     }
-    private fun initViewPager(){
-        viewPager.adapter = TabAndViewPagerAdapter(supportFragmentManager,
-            FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT)
-    }
 
-
-    inner class TabAndViewPagerAdapter(fm: FragmentManager, behavior: Int) : FragmentStatePagerAdapter(fm, behavior) {
-
-        override fun getItem(position: Int): Fragment {
-
-            return fragments[position]
-
-        }
-
-        override fun getCount(): Int {
-
-            return fragments.size
-        }
-
-        override fun getPageTitle(position: Int): CharSequence? {
-            return titles[position]
-        }
+    private fun initViewPager() {
+        viewPager.canSlide = false
+        viewPager.adapter = TabAndViewPagerAdapter(
+            supportFragmentManager,
+            FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, fragments, titles
+        )
+        viewPager.offscreenPageLimit = fragments.size - 1
     }
 
 

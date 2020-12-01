@@ -19,7 +19,7 @@ abstract class BaseActivity: AppCompatActivity() {
         initViewModel()
         initView()
         //先强制竖屏吧 屏幕切换保活数据太难处理了
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        //requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 
 

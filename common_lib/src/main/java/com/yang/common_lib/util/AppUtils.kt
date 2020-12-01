@@ -23,3 +23,9 @@ fun getScreenDpi(context: Context):ArrayList<Float>{
     val heightPixels = displayMetrics.ydpi
     return arrayListOf(widthPixels,heightPixels)
 }
+
+fun getStatusBarHeight(context: Context):Int{
+    val resources = context.resources
+    val identifier = resources.getIdentifier("status_bar_height", "dimen", "android")
+    return resources.getDimensionPixelSize(identifier)
+}

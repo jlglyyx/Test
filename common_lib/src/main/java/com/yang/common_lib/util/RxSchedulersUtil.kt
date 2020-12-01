@@ -61,6 +61,9 @@ fun <T> io_main(context: Context): ObservableTransformer<T, T> {
                     delay(TIME_SHOW_START)
                     remoteMessageDialog?.content = ErrorHandle(it).handle()
                     delay(TIME_SHOW_END)
+                    if ((context as FragmentActivity).isFinishing){
+                        return@launch
+                    }
                     remoteMessageDialog?.dismiss()
                     remoteMessageDialog = null
                 }
@@ -71,6 +74,9 @@ fun <T> io_main(context: Context): ObservableTransformer<T, T> {
                     delay(TIME_SHOW_START)
                     remoteMessageDialog?.content = "请求成功"
                     delay(TIME_SHOW_END)
+                    if ((context as FragmentActivity).isFinishing){
+                        return@launch
+                    }
                     remoteMessageDialog?.dismiss()
                     remoteMessageDialog = null
                 }
@@ -103,6 +109,9 @@ fun <T> io_main(context: Context, startContent: String): ObservableTransformer<T
                     delay(TIME_SHOW_START)
                     remoteMessageDialog?.content = ErrorHandle(it).handle()
                     delay(TIME_SHOW_END)
+                    if ((context as FragmentActivity).isFinishing){
+                        return@launch
+                    }
                     remoteMessageDialog?.dismiss()
                     remoteMessageDialog = null
                 }
@@ -114,6 +123,9 @@ fun <T> io_main(context: Context, startContent: String): ObservableTransformer<T
                     delay(TIME_SHOW_START)
                     remoteMessageDialog?.content = "请求成功"
                     delay(TIME_SHOW_END)
+                    if ((context as FragmentActivity).isFinishing){
+                        return@launch
+                    }
                     remoteMessageDialog?.dismiss()
                     remoteMessageDialog = null
                 }
@@ -156,6 +168,9 @@ fun <T> io_main(
                     delay(TIME_SHOW_START)
                     remoteMessageDialog?.content = ErrorHandle(it).handle()
                     delay(TIME_SHOW_END)
+                    if ((context as FragmentActivity).isFinishing){
+                        return@launch
+                    }
                     remoteMessageDialog?.dismiss()
                     remoteMessageDialog = null
                 }
@@ -167,6 +182,9 @@ fun <T> io_main(
                     delay(TIME_SHOW_START)
                     remoteMessageDialog?.content = endContent
                     delay(TIME_SHOW_END)
+                    if ((context as FragmentActivity).isFinishing){
+                        return@launch
+                    }
                     remoteMessageDialog?.dismiss()
                     remoteMessageDialog = null
                 }
