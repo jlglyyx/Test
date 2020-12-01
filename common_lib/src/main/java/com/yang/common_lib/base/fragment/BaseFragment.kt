@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.yang.common_lib.util.getStatusBarHeight
 
 
 /**
@@ -19,14 +20,15 @@ import androidx.fragment.app.Fragment
 open abstract class BaseFragment : Fragment() {
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        return inflater.inflate(getLayout(),container,false)
+        val inflate = inflater.inflate(getLayout(), container, false)
+        inflate.setPadding(0, statusPadding(false),0,0)
+        return inflate
     }
 
 
@@ -40,4 +42,11 @@ open abstract class BaseFragment : Fragment() {
     abstract fun getLayout():Int
     abstract fun initView()
     abstract fun initViewModel()
+
+    fun statusPadding(status: Boolean):Int{
+        if (status){
+            return getStatusBarHeight(requireActivity())
+        }
+        return 0
+    }
 }
