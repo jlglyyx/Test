@@ -19,7 +19,7 @@ import com.yang.module_mine.R
 class MineFragment : BaseFragment() {
 
     override fun getLayout(): Int {
-        return R.layout.activity_main
+        return R.layout.fra_mine
 
     }
 
