@@ -14,15 +14,29 @@ object RoutePath {
 
 
 
-    const val ACTIVITY = "activity"
-    const val FRAGMENT = "fragment"
-    const val SERVICE = "service"
-    const val PROVIDE = "provide"
+    private const val ACTIVITY = "activity"
+    private const val FRAGMENT = "fragment"
+    private const val SERVICE = "service"
+    private const val PROVIDE = "provide"
 
-    const val MODULE_MINE = "module_mine"
+    private const val MODULE_MAIN = "module_main"
+    private const val MODULE_HOME = "module_home"
+    private const val MODULE_MINE = "module_mine"
 
 
-    const val MINE_FRAGMENT = "/$MODULE_MINE/$FRAGMENT/mine"
+    //main activity
+    const val MAIN_ACTIVITY = "/$MODULE_MAIN/$ACTIVITY/main"
+
+    //main fragment
+
+
+
+
+
+
+    const val HOME_FRAGMENT = "/$MODULE_MINE/$FRAGMENT/home"
+
+    const val MINE_FRAGMENT = "/$MODULE_HOME/$FRAGMENT/mine"
 
 
 }

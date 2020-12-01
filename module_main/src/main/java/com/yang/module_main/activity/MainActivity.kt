@@ -1,4 +1,4 @@
-package com.yang.module_home.activity
+package com.yang.module_main.activity
 
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import com.alibaba.android.arouter.launcher.ARouter
 import com.yang.common_lib.base.activity.BaseActivity
 import com.yang.common_lib.constant.RoutePath
-import com.yang.module_home.R
+import com.yang.module_main.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
@@ -26,7 +26,7 @@ class MainActivity : BaseActivity() {
         titles = mutableListOf()
         fragments.add(ARouter.getInstance().build(RoutePath.MINE_FRAGMENT).navigation() as Fragment)
         fragments.add(ARouter.getInstance().build(RoutePath.MINE_FRAGMENT).navigation() as Fragment)
-        fragments.add(ARouter.getInstance().build(RoutePath.MINE_FRAGMENT).navigation() as Fragment)
+        fragments.add(ARouter.getInstance().build(RoutePath.HOME_FRAGMENT).navigation() as Fragment)
         fragments.add(ARouter.getInstance().build(RoutePath.MINE_FRAGMENT).navigation() as Fragment)
         titles.add("1")
         titles.add("2")
