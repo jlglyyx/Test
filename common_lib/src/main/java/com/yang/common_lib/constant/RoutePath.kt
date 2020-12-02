@@ -13,7 +13,6 @@ package com.yang.common_lib.constant
 object RoutePath {
 
 
-
     private const val ACTIVITY = "activity"
     private const val FRAGMENT = "fragment"
     private const val SERVICE = "service"
@@ -30,15 +29,12 @@ object RoutePath {
     //main fragment
 
 
-
-
-
     //home fragment
     const val HOME_FRAGMENT = "/$MODULE_HOME/$FRAGMENT/HomeFragment"
     const val HOME_RECOMMEND_FRAGMENT = "/$MODULE_HOME/$FRAGMENT/RecommendFragment"
 
-
-
+    //home activity
+    const val HOME_VIDEOPLAY_ACTIVITY = "/$MODULE_HOME/$ACTIVITY/VideoPlayActivity"
 
     const val MINE_FRAGMENT = "/$MODULE_MINE/$FRAGMENT/MineFragment"
 

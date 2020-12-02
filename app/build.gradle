@@ -51,7 +51,7 @@ dependencies {
 
     kapt rootProject.ext.dependencies['dagger-compiler']
     kapt rootProject.ext.dependencies['lifecycle-compiler']
-
+    kapt 'com.github.bumptech.glide:compiler:4.11.0'
 
     if (!isModule.toBoolean()){
         implementation project(path:':module_main')

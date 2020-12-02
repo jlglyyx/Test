@@ -4,4 +4,6 @@
     <item name="viewPager" type="id"/>
     <item name="viewPager2" type="id"/>
     <item name="tabLayout" type="id"/>
+    <item name="recyclerView" type="id"/>
+    <item name="refreshLayout" type="id"/>
 </resources>

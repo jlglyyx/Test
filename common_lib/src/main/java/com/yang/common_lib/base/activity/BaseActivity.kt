@@ -1,5 +1,6 @@
 package com.yang.common_lib.base.activity
 
+import android.content.Context
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +9,7 @@ import javax.inject.Inject
 
 abstract class BaseActivity: AppCompatActivity() {
 
+    lateinit var mContext: Context
     companion object{
         private const val TAG = "BaseActivity"
     }
@@ -16,6 +18,7 @@ abstract class BaseActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(getLayout())
+        mContext = this
         initViewModel()
         initView()
         //先强制竖屏吧 屏幕切换保活数据太难处理了

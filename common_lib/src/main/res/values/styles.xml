@@ -13,6 +13,14 @@
         <item name="tabIndicatorColor">@android:color/transparent</item>
         <item name="tabRippleColor">@android:color/transparent</item>
         <item name="tabGravity">fill</item>
+        <item name="tabSelectedTextColor">@color/colorAccent</item>
+        <item name="tabPaddingTop">20dp</item>
+    </style>
+    <style name="MTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabRippleColor">@android:color/transparent</item>
+        <item name="tabGravity">fill</item>
+        <item name="tabMode">scrollable</item>
+        <item name="tabSelectedTextColor">@color/colorAccent</item>
     </style>
 
 </resources>

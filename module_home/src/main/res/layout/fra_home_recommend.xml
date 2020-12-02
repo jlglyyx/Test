@@ -4,11 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="11111111111111"
-        android:id="@+id/tv_text"/>
+    <include layout="@layout/view_public_normal_recycler_view"/>
 
 </LinearLayout>

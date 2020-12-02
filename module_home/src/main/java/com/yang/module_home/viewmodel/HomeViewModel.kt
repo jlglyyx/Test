@@ -28,24 +28,24 @@ class HomeViewModel @Inject constructor(private val homeRepository: HomeReposito
     var fragments = MutableLiveData<MutableList<Fragment>>().apply {
        with(mutableListOf<Fragment>()) {
            add(ARouter.getInstance().build(RoutePath.HOME_RECOMMEND_FRAGMENT).navigation() as Fragment)
-           add(ARouter.getInstance().build(RoutePath.MINE_FRAGMENT).navigation() as Fragment)
-           add(ARouter.getInstance().build(RoutePath.MINE_FRAGMENT).navigation() as Fragment)
-           add(ARouter.getInstance().build(RoutePath.MINE_FRAGMENT).navigation() as Fragment)
-           add(ARouter.getInstance().build(RoutePath.MINE_FRAGMENT).navigation() as Fragment)
-           add(ARouter.getInstance().build(RoutePath.MINE_FRAGMENT).navigation() as Fragment)
-           add(ARouter.getInstance().build(RoutePath.MINE_FRAGMENT).navigation() as Fragment)
+           add(ARouter.getInstance().build(RoutePath.HOME_RECOMMEND_FRAGMENT).navigation() as Fragment)
+           add(ARouter.getInstance().build(RoutePath.HOME_RECOMMEND_FRAGMENT).navigation() as Fragment)
+           add(ARouter.getInstance().build(RoutePath.HOME_RECOMMEND_FRAGMENT).navigation() as Fragment)
+           add(ARouter.getInstance().build(RoutePath.HOME_RECOMMEND_FRAGMENT).navigation() as Fragment)
+           add(ARouter.getInstance().build(RoutePath.HOME_RECOMMEND_FRAGMENT).navigation() as Fragment)
+           add(ARouter.getInstance().build(RoutePath.HOME_RECOMMEND_FRAGMENT).navigation() as Fragment)
            value = this
        }
     }
     var titles = MutableLiveData<MutableList<String>>().apply {
        with(mutableListOf<String>()) {
-           add("1")
-           add("2")
-           add("3")
-           add("4")
-           add("5")
-           add("6")
-           add("7")
+           add("推荐")
+           add("推荐")
+           add("推荐")
+           add("推荐")
+           add("推荐")
+           add("推荐")
+           add("推荐")
            value = this
        }
     }

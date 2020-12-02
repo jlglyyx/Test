@@ -2,15 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto" >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <com.yang.common_lib.widget.MToolbarView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:isLeftImg = "true"
+        app:centerContent="首页"
+        />
 
     <com.google.android.material.tabs.TabLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@id/tabLayout"
-        app:tabGravity="fill"
-        app:tabMode="scrollable" />
+        style="@style/MTabLayout" />
     <androidx.viewpager.widget.ViewPager
         android:layout_width="match_parent"
         android:layout_height="match_parent"

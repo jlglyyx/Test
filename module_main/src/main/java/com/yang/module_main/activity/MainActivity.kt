@@ -36,10 +36,10 @@ class MainActivity : BaseActivity() {
         fragments.add(ARouter.getInstance().build(RoutePath.MINE_FRAGMENT).navigation() as Fragment)
         fragments.add(ARouter.getInstance().build(RoutePath.MINE_FRAGMENT).navigation() as Fragment)
         fragments.add(ARouter.getInstance().build(RoutePath.MINE_FRAGMENT).navigation() as Fragment)
-        titles.add("1")
-        titles.add("2")
-        titles.add("3")
-        titles.add("4")
+        titles.add("首页")
+        titles.add("视频")
+        titles.add("更多")
+        titles.add("我的")
 
         imgSelect.add(R.drawable.img_home_select)
         imgSelect.add(R.drawable.img_mine_select)
@@ -51,8 +51,9 @@ class MainActivity : BaseActivity() {
         imgUnSelect.add(R.drawable.img_home_unselect)
         imgUnSelect.add(R.drawable.img_mine_unselect)
 
-        initTabLayout()
         initViewPager()
+
+
     }
 
     override fun initViewModel() {
@@ -62,20 +63,15 @@ class MainActivity : BaseActivity() {
 
 
     private fun initTabLayout() {
-        titles.forEach {
-            tabLayout.addTab(tabLayout.newTab().setText(it))
+
+        for(i in imgSelect.indices){
+            if (i == 0){
+                tabLayout.getTabAt(i)?.setIcon(imgSelect[i])
+            }else{
+                tabLayout.getTabAt(i)?.setIcon(imgUnSelect[i])
+            }
+
         }
-
-//        for (i in imgUnSelect.indices) {
-//            Log.i("ssss", "initTabLayout: ${i}  ${imgUnSelect[i]}")
-//            tabLayout.getTabAt(i)?.setIcon(imgUnSelect[i])
-//        }
-
-
-        tabLayout.getTabAt(0)?.setIcon(imgSelect[0])
-        tabLayout.getTabAt(1)?.setIcon(imgUnSelect[1])
-        tabLayout.getTabAt(2)?.setIcon(imgUnSelect[2])
-        tabLayout.getTabAt(3)?.setIcon(imgUnSelect[3])
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
@@ -91,7 +87,8 @@ class MainActivity : BaseActivity() {
 
         })
 
-        tabLayout.setupWithViewPager(viewPager)
+
+
     }
 
     private fun initViewPager() {
@@ -101,7 +98,11 @@ class MainActivity : BaseActivity() {
             FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, fragments, titles
         )
         viewPager.offscreenPageLimit = fragments.size - 1
+
+        tabLayout.setupWithViewPager(viewPager)
+        initTabLayout()
     }
+
 
 
 }

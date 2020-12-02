@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import androidx.startup.AppInitializer
 import com.alibaba.android.arouter.launcher.ARouter
+import com.bumptech.glide.Glide
 import com.squareup.leakcanary.LeakCanary
 import com.tencent.bugly.crashreport.CrashReport
 import com.yang.common_lib.BuildConfig

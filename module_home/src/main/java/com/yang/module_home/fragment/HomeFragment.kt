@@ -45,7 +45,6 @@ class HomeFragment: BaseFragment() {
         fragments = homeViewModel.fragments.value!!
         titles = homeViewModel.titles.value!!
         initViewPager()
-        initTabLayout()
 
     }
 
@@ -58,24 +57,22 @@ class HomeFragment: BaseFragment() {
     }
 
     override fun setStatusPadding(): Boolean {
-        return true
+        return false
     }
 
 
 
     private fun initTabLayout(){
-        titles.forEach {
-            tabLayout.addTab(tabLayout.newTab().setText(it))
-        }
 
-        tabLayout.setupWithViewPager(viewPager)
+
 
 
     }
     private fun initViewPager(){
         viewPager.adapter = TabAndViewPagerAdapter(childFragmentManager, FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,fragments,titles)
-
         viewPager.offscreenPageLimit = fragments.size-1
+        tabLayout.setupWithViewPager(viewPager)
+        initTabLayout()
     }
 
 

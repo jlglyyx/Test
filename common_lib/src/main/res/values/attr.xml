@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="HeadToolbarView">
+        <attr name="leftContent" format="string"/>
+        <attr name="centerContent" format="string"/>
+        <attr name="rightContent" format="string"/>
+        <attr name="leftImg" format="reference|color"/>
+        <attr name="rightImg" format="reference|color"/>
+        <attr name="isLeftContent" format="boolean"/>
+        <attr name="isCenterContent" format="boolean"/>
+        <attr name="isRighrContent" format="boolean"/>
+        <attr name="isLeftImg" format="boolean"/>
+        <attr name="isRightImg" format="boolean"/>
+    </declare-styleable>
+</resources>

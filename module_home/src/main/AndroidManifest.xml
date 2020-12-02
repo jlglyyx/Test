@@ -10,6 +10,7 @@
         android:supportsRtl="true"
         android:name="com.yang.common_lib.base.app.BaseApplication"
         android:theme="@style/AppTheme">
+        <activity android:name=".fragment.recommend.activity.VideoPlayActivity" android:configChanges="orientation|keyboardHidden|screenSize" android:windowSoftInputMode="adjustResize|stateVisible"/>
     </application>
 
 </manifest>

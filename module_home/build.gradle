@@ -67,4 +67,5 @@ dependencies {
     kapt rootProject.ext.dependencies['dagger-compiler']
     kapt rootProject.ext.dependencies['lifecycle-compiler']
     kapt rootProject.ext.dependencies['arouter-compiler']
+    kapt 'com.github.bumptech.glide:compiler:4.11.0'
 }
