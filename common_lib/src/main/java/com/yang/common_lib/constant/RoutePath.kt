@@ -35,6 +35,7 @@ object RoutePath {
 
     //home activity
     const val HOME_VIDEOPLAY_ACTIVITY = "/$MODULE_HOME/$ACTIVITY/VideoPlayActivity"
+    const val HOME_SEARCH_ACTIVITY = "/$MODULE_HOME/$ACTIVITY/SearchActivity"
 
     const val MINE_FRAGMENT = "/$MODULE_MINE/$FRAGMENT/MineFragment"
 

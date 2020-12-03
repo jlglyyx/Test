@@ -5,9 +5,8 @@
     android:orientation="vertical">
 
 
-
     <include layout="@layout/view_public_normal_head_search"/>
 
-    <include layout="@layout/view_public_normal_recycler_view"/>
+    <include layout="@layout/view_public_normal_recycler_view" />
 
 </LinearLayout>

@@ -1,5 +1,6 @@
 package com.yang.module_home.fragment
 
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.ViewModelProvider
@@ -28,10 +29,10 @@ import javax.inject.Inject
  * @Date 2020/12/1 10:37
  */
 @Route(path = RoutePath.HOME_FRAGMENT)
-class HomeFragment: BaseFragment() {
+class HomeFragment : BaseFragment() {
 
-    private lateinit var fragments:MutableList<Fragment>
-    private lateinit var titles:MutableList<String>
+    private lateinit var fragments: MutableList<Fragment>
+    private lateinit var titles: MutableList<String>
     private lateinit var homeViewModel: HomeViewModel
 
     @Inject
@@ -51,9 +52,10 @@ class HomeFragment: BaseFragment() {
 
     override fun initViewModel() {
 
-        DaggerHomeComponent.builder().homeModule(HomeModule(requireActivity())).remoteComponent(getRemoteComponent()).build().inject(this)
+        DaggerHomeComponent.builder().homeModule(HomeModule(requireActivity()))
+            .remoteComponent(getRemoteComponent()).build().inject(this)
 
-        homeViewModel = ViewModelProvider(this,homeViewModelFactory).get(HomeViewModel::class.java)
+        homeViewModel = ViewModelProvider(this, homeViewModelFactory).get(HomeViewModel::class.java)
     }
 
     override fun setStatusPadding(): Boolean {
@@ -61,20 +63,31 @@ class HomeFragment: BaseFragment() {
     }
 
 
-
-    private fun initTabLayout(){
-
-
+    private fun initTabLayout() {
 
 
     }
-    private fun initViewPager(){
-        viewPager.adapter = TabAndViewPagerAdapter(childFragmentManager, FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,fragments,titles)
-        viewPager.offscreenPageLimit = fragments.size-1
+
+    private fun initViewPager() {
+        viewPager.adapter = TabAndViewPagerAdapter(
+            childFragmentManager,
+            FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
+            fragments,
+            titles
+        )
+        viewPager.offscreenPageLimit = fragments.size - 1
         tabLayout.setupWithViewPager(viewPager)
         initTabLayout()
-    }
 
+//        activity?.tabLayout.let {
+//            it?.post {
+////                val layoutParams = viewPager.layoutParams as LinearLayout.LayoutParams
+////                layoutParams.bottomMargin = it.height+100
+////                viewPager.layoutParams = layoutParams
+//                viewPager.setPadding(0,0,0,it.height+80)
+//            }
+//        }
+    }
 
 
 }

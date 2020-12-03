@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.database.Cursor
+import android.graphics.Rect
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -15,10 +16,20 @@ import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.google.android.material.imageview.ShapeableImageView
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
 import com.shuyu.gsyvideoplayer.listener.GSYSampleCallBack
@@ -27,9 +38,15 @@ import com.shuyu.gsyvideoplayer.utils.OrientationUtils
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.yang.common_lib.base.activity.BaseActivity
 import com.yang.common_lib.constant.RoutePath
+import com.yang.common_lib.util.getPath
 import com.yang.common_lib.util.showShort
 import com.yang.module_home.R
+import com.yang.module_home.fragment.recommend.RecommendFragment
+import com.yang.module_home.fragment.recommend.bean.CommentBean
+import com.yang.module_home.fragment.recommend.bean.RecommendTypeBean
 import kotlinx.android.synthetic.main.act_video_paly.*
+import kotlinx.android.synthetic.main.act_video_paly.recyclerView
+import kotlinx.android.synthetic.main.view_public_normal_recycler_view.*
 
 
 /**
@@ -47,6 +64,9 @@ class VideoPlayActivity : BaseActivity() {
     var orientationUtils: OrientationUtils?=null
     private var isPause = true
     private var isPlay = true
+    lateinit var videoCommentAdapter:VideoCommentAdapter
+    lateinit var linearLayoutManager: LinearLayoutManager
+    lateinit var  list:MutableList<CommentBean>
 
     companion object {
         const val FILE_CODE = 100
@@ -61,6 +81,7 @@ class VideoPlayActivity : BaseActivity() {
 
     override fun initView() {
         initPermission()
+        initRecyclerView()
         tv_test.setOnClickListener {
             val intent = Intent(Intent.ACTION_GET_CONTENT)
             intent.type = "*/*" //无类型限制
@@ -75,6 +96,9 @@ class VideoPlayActivity : BaseActivity() {
             }
             url = et_url.text.toString()
             initVideo()
+             list.add(0,CommentBean("李四",et_url.text.toString()))
+            videoCommentAdapter.notifyDataSetChanged()
+            recyclerView.smoothScrollToPosition(0)
             et_url.setText("")
             showShort("成功")
         }
@@ -212,106 +236,37 @@ class VideoPlayActivity : BaseActivity() {
     }
 
 
-    @SuppressLint("NewApi", "ObsoleteSdkInt")
-    fun getPath(context: Context, uri: Uri): String? {
-        val isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
 
-        // DocumentProvider
-        if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
-            // ExternalStorageProvider
-            if (isExternalStorageDocument(uri)) {
-                val docId = DocumentsContract.getDocumentId(uri)
-                val split = docId.split(":".toRegex()).toTypedArray()
-                val type = split[0]
-                if ("primary".equals(type, ignoreCase = true)) {
-                    return Environment.getExternalStorageDirectory().toString() + "/" + split[1]
-                }
-            } else if (isDownloadsDocument(uri)) {
-                val id = DocumentsContract.getDocumentId(uri)
-                val contentUri = ContentUris.withAppendedId(
-                    Uri.parse("content://downloads/public_downloads"),
-                    java.lang.Long.valueOf(id)
-                )
-                return getDataColumn(context, contentUri, null, null)
-            } else if (isMediaDocument(uri)) {
-                val docId = DocumentsContract.getDocumentId(uri)
-                val split = docId.split(":".toRegex()).toTypedArray()
-                val type = split[0]
-                var contentUri: Uri? = null
-                if ("image" == type) {
-                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-                } else if ("video" == type) {
-                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-                } else if ("audio" == type) {
-                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-                }
-                val selection = "_id=?"
-                val selectionArgs =
-                    arrayOf(split[1])
-                return getDataColumn(context, contentUri!!, selection, selectionArgs)
-            }
-        } else if ("content".equals(uri.scheme, ignoreCase = true)) {
-            return getDataColumn(context, uri, null, null)
-        } else if ("file".equals(uri.scheme, ignoreCase = true)) {
-            return uri.path
+
+
+    private fun initRecyclerView() {
+        list = mutableListOf()
+        for (i in 0..30){
+            list.add(CommentBean("张 $i","这电影好看"))
         }
-        return null
-    }
+        videoCommentAdapter = VideoCommentAdapter(R.layout.item_recommend_comment, list)
+        recyclerView.adapter = videoCommentAdapter
+        linearLayoutManager = LinearLayoutManager(this)
 
-    /**
-     * Get the value of the data column for this Uri. This is useful for
-     * MediaStore Uris, and other file-based ContentProviders.
-     *
-     * @param context       The context.
-     * @param uri           The Uri to query.
-     * @param selection     (Optional) Filter used in the query.
-     * @param selectionArgs (Optional) Selection arguments used in the query.
-     * @return The value of the _data column, which is typically a file path.
-     */
-    fun getDataColumn(
-        context: Context, uri: Uri, selection: String?,
-        selectionArgs: Array<String>?
-    ): String? {
-        var cursor: Cursor? = null
-        val column = "_data"
-        val projection = arrayOf(column)
-        try {
-            cursor = context.getContentResolver().query(
-                uri, projection, selection, selectionArgs,
-                null
-            )
-            if (cursor != null && cursor.moveToFirst()) {
-                val column_index: Int = cursor.getColumnIndexOrThrow(column)
-                return cursor.getString(column_index)
-            }
-        } finally {
-            cursor?.close()
+        recyclerView.layoutManager = linearLayoutManager
+        videoCommentAdapter.setOnItemClickListener { adapter, view, position ->
+
+            //showShort(position)
         }
-        return null
+
     }
 
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is ExternalStorageProvider.
-     */
-    fun isExternalStorageDocument(uri: Uri): Boolean {
-        return "com.android.externalstorage.documents" == uri.authority
-    }
+    inner class VideoCommentAdapter(layoutResId: Int, data: MutableList<CommentBean>?) :
+        BaseQuickAdapter<CommentBean, BaseViewHolder>(layoutResId, data) {
+        override fun convert(holder: BaseViewHolder, item: CommentBean) {
+            holder.setText(R.id.tv_user_name,item.userName)
+                .setText(R.id.tv_comment,item.comment)
+            val siv_head = holder.getView<ShapeableImageView>(R.id.siv_head)
+            Glide.with(siv_head).load("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1606997299248&di=8612164dc54681b1fcd44f765f69cdfa&imgtype=0&src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F201906%2F08%2F20190608005627_dxdnb.thumb.400_0.jpg").into(siv_head)
 
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is DownloadsProvider.
-     */
-    fun isDownloadsDocument(uri: Uri): Boolean {
-        return "com.android.providers.downloads.documents" == uri.authority
-    }
+        }
 
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is MediaProvider.
-     */
-    fun isMediaDocument(uri: Uri): Boolean {
-        return "com.android.providers.media.documents" == uri.authority
+
     }
 
 }

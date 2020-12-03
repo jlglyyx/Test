@@ -1,6 +1,8 @@
 package com.yang.module_home.fragment.recommend
 
 import android.graphics.Rect
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import androidx.lifecycle.Observer
@@ -15,11 +17,15 @@ import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
+import com.yang.common_lib.adapter.MBannerAdapter
 import com.yang.common_lib.base.fragment.BaseLazyFragment
 import com.yang.common_lib.constant.RoutePath
+import com.yang.common_lib.constant.RoutePath.HOME_SEARCH_ACTIVITY
+import com.yang.common_lib.data.BannerBean
 import com.yang.common_lib.util.dip2px
 import com.yang.common_lib.util.getRemoteComponent
 import com.yang.common_lib.util.getScreenPx
+import com.yang.common_lib.util.showShort
 import com.yang.module_home.R
 import com.yang.module_home.di.component.DaggerHomeComponent
 import com.yang.module_home.di.module.HomeModule
@@ -30,6 +36,9 @@ import com.yang.module_home.fragment.recommend.bean.RecommendTypeBean.Companion.
 import com.yang.module_home.fragment.recommend.bean.RecommendTypeBean.Companion.SMART_IMG_CODE
 import com.yang.module_home.fragment.recommend.bean.RecommendTypeBean.Companion.TITLE_CODE
 import com.yang.module_home.viewmodel.HomeViewModel
+import com.youth.banner.Banner
+import com.youth.banner.indicator.CircleIndicator
+import kotlinx.android.synthetic.main.view_public_normal_head_search.*
 import kotlinx.android.synthetic.main.view_public_normal_recycler_view.*
 import javax.inject.Inject
 
@@ -55,6 +64,8 @@ class RecommendFragment : BaseLazyFragment() {
 
     var space:Int = 0
 
+    lateinit var videoAdapter:VideoAdapter
+
 
     override fun getLayout(): Int {
 
@@ -62,18 +73,15 @@ class RecommendFragment : BaseLazyFragment() {
     }
 
     override fun initView() {
-        initRecyclerView()
         space = dip2px(requireContext(),6f)
-        refreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
-            override fun onLoadMore(refreshLayout: RefreshLayout) {
-                getB()
-            }
 
-            override fun onRefresh(refreshLayout: RefreshLayout) {
-                getB()
-            }
+        ll_search.setOnClickListener {
+            ARouter.getInstance().build(HOME_SEARCH_ACTIVITY).navigation()
+        }
 
-        })
+        initRecyclerView()
+        initBanner()
+        initSmartRefreshLayout()
 
     }
 
@@ -91,15 +99,17 @@ class RecommendFragment : BaseLazyFragment() {
 
     private fun initRecyclerView() {
 
-
-        val videoAdapter = VideoAdapter(homeViewModel.recommendTypeBeans.value!!)
+        videoAdapter = VideoAdapter(homeViewModel.recommendTypeBeans.value!!)
         recyclerView.adapter = videoAdapter
         gridLayoutManager = GridLayoutManager(requireContext(),4)
         gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
             override fun getSpanSize(position: Int): Int {
-                val recommendTypeBean = videoAdapter.data[position]
+                if (position == 0){
+                    return  4
+                }
+                val recommendTypeBean = videoAdapter.data[position-1]
                 return when(recommendTypeBean.itemType){
-                    BANNER_CODE -> 4
+                    BANNER_CODE -> 2
                     TITLE_CODE -> 4
                     BIG_IMG_CODE -> 4
                     SMART_IMG_CODE -> 2
@@ -113,6 +123,7 @@ class RecommendFragment : BaseLazyFragment() {
         videoAdapter.setOnItemClickListener { adapter, view, position ->
             val any = adapter.data[position] as RecommendTypeBean
             ARouter.getInstance().build(RoutePath.HOME_VIDEOPLAY_ACTIVITY).withString("url",any.url).navigation()
+            //showShort(position)
         }
         recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration(){
             override fun getItemOffsets(
@@ -123,21 +134,37 @@ class RecommendFragment : BaseLazyFragment() {
             ) {
                 super.getItemOffsets(outRect, view, parent, state)
                 val position = parent.getChildAdapterPosition(view)
-                if (position == -1){
+                if (position == -1 || position == 0){
                     return
                 }
-                val recommendTypeBean = videoAdapter.data[position]
+                val recommendTypeBean = videoAdapter.data[position-1]
                 when(recommendTypeBean.itemType){
                     SMART_IMG_CODE ->{
                         if (position%2==0){
-                            outRect.right = space/2
-                        }else {
                             outRect.left = space/2
+                        }else {
+                            outRect.right = space/2
                         }
                     }
                 }
             }
         })
+
+    }
+
+    private fun initBanner(){
+
+        val mutableListOf = mutableListOf<BannerBean>()
+        for (i in 0..10){
+            mutableListOf.add(BannerBean("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1606987532332&di=2bed80227783721facc3aed8ce5c11ac&imgtype=0&src=http%3A%2F%2Fimg.pptjia.com%2Fimage%2F20180711%2F6e2198894a3107f377c490569fa2650c.JPG"))
+        }
+
+        val view = LayoutInflater.from(requireContext()).inflate(R.layout.view_banner, null, false)
+        val banner = view.findViewById<Banner<*,*>>(R.id.banner)
+        banner.addBannerLifecycleObserver(this)
+            .setAdapter(MBannerAdapter(mutableListOf)).indicator = CircleIndicator(requireContext())
+
+        videoAdapter.addHeaderView(view)
 
     }
 
@@ -149,6 +176,19 @@ class RecommendFragment : BaseLazyFragment() {
             if (refreshLayout.isLoading) {
                 refreshLayout.finishLoadMore()
             }
+        })
+    }
+
+    private fun initSmartRefreshLayout(){
+        refreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
+            override fun onLoadMore(refreshLayout: RefreshLayout) {
+                getB()
+            }
+
+            override fun onRefresh(refreshLayout: RefreshLayout) {
+                getB()
+            }
+
         })
     }
 
@@ -172,7 +212,6 @@ class RecommendFragment : BaseLazyFragment() {
                         .setDefaultRequestOptions(RequestOptions().frame(4000).centerCrop())
                         .load("https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=993164159,3034267664&fm=26&gp=0.jpg")
                         .into(view)
-
                 }
             }
 

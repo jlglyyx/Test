@@ -100,6 +100,9 @@ class MainActivity : BaseActivity() {
         viewPager.offscreenPageLimit = fragments.size - 1
 
         tabLayout.setupWithViewPager(viewPager)
+
+
+
         initTabLayout()
     }
 
