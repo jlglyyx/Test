@@ -57,7 +57,7 @@ class HomeFragment: BaseFragment() {
     }
 
     override fun setStatusPadding(): Boolean {
-        return false
+        return true
     }
 
 

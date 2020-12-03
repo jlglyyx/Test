@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         app:isLeftImg = "true"
         app:centerContent="首页"
+        android:visibility="gone"
         />
 
     <com.google.android.material.tabs.TabLayout
