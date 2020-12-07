@@ -15,12 +15,17 @@ import com.chad.library.adapter.base.entity.MultiItemEntity
 class RecommendTypeBean(override val itemType: Int) :MultiItemEntity {
 
     companion object{
-        const val BANNER_CODE = 0
         const val BIG_IMG_CODE = 1
         const val SMART_IMG_CODE = 2
         const val TITLE_CODE = 3
     }
 
+    var id:String? = null
     var url:String = ""
+    var imgUrl:String? = null
+    var type:String? = null
+    var title:String? = null
+    var desc:String? = null
+
 
 }

@@ -3,33 +3,21 @@ package com.yang.module_home.fragment.recommend.activity
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.ContentUris
-import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
-import android.database.Cursor
-import android.graphics.Rect
 import android.net.Uri
-import android.os.Build
-import android.os.Environment
-import android.provider.DocumentsContract
-import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
-import android.view.View
 import android.widget.ImageView
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.gson.Gson
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
 import com.shuyu.gsyvideoplayer.listener.GSYSampleCallBack
@@ -39,14 +27,16 @@ import com.tbruyelle.rxpermissions2.RxPermissions
 import com.yang.common_lib.base.activity.BaseActivity
 import com.yang.common_lib.constant.RoutePath
 import com.yang.common_lib.util.getPath
+import com.yang.common_lib.util.getRemoteComponent
 import com.yang.common_lib.util.showShort
 import com.yang.module_home.R
-import com.yang.module_home.fragment.recommend.RecommendFragment
+import com.yang.module_home.di.component.DaggerHomeComponent
+import com.yang.module_home.di.module.HomeModule
 import com.yang.module_home.fragment.recommend.bean.CommentBean
 import com.yang.module_home.fragment.recommend.bean.RecommendTypeBean
 import kotlinx.android.synthetic.main.act_video_paly.*
 import kotlinx.android.synthetic.main.act_video_paly.recyclerView
-import kotlinx.android.synthetic.main.view_public_normal_recycler_view.*
+import javax.inject.Inject
 
 
 /**
@@ -68,18 +58,24 @@ class VideoPlayActivity : BaseActivity() {
     lateinit var linearLayoutManager: LinearLayoutManager
     lateinit var  list:MutableList<CommentBean>
 
+    @Inject
+    lateinit var gson: Gson
+
     companion object {
         const val FILE_CODE = 100
     }
 
-    @Autowired
-    lateinit var url: String
+    @Autowired(name = "recommendTypeBean")
+    lateinit var recommendTypeBeanGson: String
+    lateinit var recommendTypeBean: RecommendTypeBean
 
     override fun getLayout(): Int {
         return R.layout.act_video_paly
     }
 
     override fun initView() {
+        recommendTypeBean = gson.fromJson(recommendTypeBeanGson,RecommendTypeBean::class.java)
+
         initPermission()
         initRecyclerView()
         tv_test.setOnClickListener {
@@ -94,7 +90,7 @@ class VideoPlayActivity : BaseActivity() {
                 showShort("url为空")
                 return@setOnClickListener
             }
-            url = et_url.text.toString()
+            recommendTypeBean.url = et_url.text.toString()
             initVideo()
              list.add(0,CommentBean("李四",et_url.text.toString()))
             videoCommentAdapter.notifyDataSetChanged()
@@ -106,6 +102,8 @@ class VideoPlayActivity : BaseActivity() {
 
     override fun initViewModel() {
         ARouter.getInstance().inject(this)
+        DaggerHomeComponent.builder().homeModule(HomeModule(this)).remoteComponent(
+            getRemoteComponent()).build().inject(this)
     }
 
     @SuppressLint("CheckResult")
@@ -141,7 +139,7 @@ class VideoPlayActivity : BaseActivity() {
         val imageView = ImageView(this)
         imageView.scaleType = ImageView.ScaleType.CENTER_CROP
         //imageView.setImageResource(R.mipmap.ic_launcher)
-        Log.i("sssssssss", "initVideo: $url")
+        Log.i("sssssssss", "initVideo: ${recommendTypeBean.url}")
         val gsyVideoOption = GSYVideoOptionBuilder()
         gsyVideoOption
             .setThumbImageView(imageView)
@@ -151,7 +149,7 @@ class VideoPlayActivity : BaseActivity() {
             .setAutoFullWithSize(true)
             .setShowFullAnimation(false)
             .setNeedLockFull(true)
-            .setUrl(url)
+            .setUrl(recommendTypeBean.url)
             .setCacheWithPlay(false)
             .setVideoTitle("测试视频")
             .setVideoAllCallBack(object : GSYSampleCallBack() {
@@ -229,7 +227,7 @@ class VideoPlayActivity : BaseActivity() {
             val uri = data.data as Uri
             val path = getPath(this, uri)
             Log.i("TAG", "onActivityResult: ${uri.path} ${path.toString()}")
-            url = path.toString()
+            recommendTypeBean.url = path.toString()
             initVideo()
 
         }

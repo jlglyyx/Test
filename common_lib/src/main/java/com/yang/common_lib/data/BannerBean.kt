@@ -10,4 +10,4 @@ package com.yang.common_lib.data
  *
  * @Date 2020/12/3 14:30
  */
-data class BannerBean(val url:String)
+data class  BannerBean(val url:String)

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -15,6 +16,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.google.gson.Gson
+import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
 import com.yang.common_lib.adapter.MBannerAdapter
@@ -24,20 +27,24 @@ import com.yang.common_lib.constant.RoutePath.HOME_SEARCH_ACTIVITY
 import com.yang.common_lib.data.BannerBean
 import com.yang.common_lib.util.dip2px
 import com.yang.common_lib.util.getRemoteComponent
-import com.yang.common_lib.util.getScreenPx
+import com.yang.common_lib.util.px2dip
 import com.yang.common_lib.util.showShort
 import com.yang.module_home.R
 import com.yang.module_home.di.component.DaggerHomeComponent
 import com.yang.module_home.di.module.HomeModule
 import com.yang.module_home.factory.HomeViewModelFactory
+import com.yang.module_home.fragment.HomeFragment
 import com.yang.module_home.fragment.recommend.bean.RecommendTypeBean
-import com.yang.module_home.fragment.recommend.bean.RecommendTypeBean.Companion.BANNER_CODE
 import com.yang.module_home.fragment.recommend.bean.RecommendTypeBean.Companion.BIG_IMG_CODE
 import com.yang.module_home.fragment.recommend.bean.RecommendTypeBean.Companion.SMART_IMG_CODE
 import com.yang.module_home.fragment.recommend.bean.RecommendTypeBean.Companion.TITLE_CODE
 import com.yang.module_home.viewmodel.HomeViewModel
 import com.youth.banner.Banner
 import com.youth.banner.indicator.CircleIndicator
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.tabLayout
+import kotlinx.android.synthetic.main.activity_main.viewPager
+import kotlinx.android.synthetic.main.fra_home.*
 import kotlinx.android.synthetic.main.view_public_normal_head_search.*
 import kotlinx.android.synthetic.main.view_public_normal_recycler_view.*
 import javax.inject.Inject
@@ -60,7 +67,10 @@ class RecommendFragment : BaseLazyFragment() {
     @Inject
     lateinit var homeViewModelFactory: HomeViewModelFactory
 
-    lateinit var gridLayoutManager: GridLayoutManager
+    private lateinit var gridLayoutManager: GridLayoutManager
+
+    @Inject
+    lateinit var gson: Gson
 
     var space:Int = 0
 
@@ -86,7 +96,7 @@ class RecommendFragment : BaseLazyFragment() {
     }
 
     override fun initData() {
-        getB()
+        getRecommendList()
     }
 
     override fun initViewModel() {
@@ -99,17 +109,20 @@ class RecommendFragment : BaseLazyFragment() {
 
     private fun initRecyclerView() {
 
-        videoAdapter = VideoAdapter(homeViewModel.recommendTypeBeans.value!!)
+        with(homeViewModel.recommendTypeBeans.value!!){
+            videoAdapter = VideoAdapter(mutableListOf())
+            Log.i("===TAG===", "initRecyclerView: ${gson.toJson(this)}")
+        }
+
         recyclerView.adapter = videoAdapter
         gridLayoutManager = GridLayoutManager(requireContext(),4)
         gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
             override fun getSpanSize(position: Int): Int {
-                if (position == 0){
+                if (position == 0){//view的下标为0
                     return  4
                 }
-                val recommendTypeBean = videoAdapter.data[position-1]
+                val recommendTypeBean = videoAdapter.data[position-1]//view的下标为1 但是data得的为0
                 return when(recommendTypeBean.itemType){
-                    BANNER_CODE -> 2
                     TITLE_CODE -> 4
                     BIG_IMG_CODE -> 4
                     SMART_IMG_CODE -> 2
@@ -122,9 +135,20 @@ class RecommendFragment : BaseLazyFragment() {
         recyclerView.layoutManager = gridLayoutManager
         videoAdapter.setOnItemClickListener { adapter, view, position ->
             val any = adapter.data[position] as RecommendTypeBean
-            ARouter.getInstance().build(RoutePath.HOME_VIDEOPLAY_ACTIVITY).withString("url",any.url).navigation()
-            //showShort(position)
+            when(any.itemType){
+                TITLE_CODE ->{
+                    showShort(position)
+                }
+                else ->{
+                    ARouter.getInstance().build(RoutePath.HOME_VIDEOPLAY_ACTIVITY).withString("recommendTypeBean",gson.toJson(any)).navigation()
+
+                }
+            }
         }
+
+
+
+
         recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration(){
             override fun getItemOffsets(
                 outRect: Rect,
@@ -150,6 +174,14 @@ class RecommendFragment : BaseLazyFragment() {
             }
         })
 
+        activity?.tabLayout.let {
+            it?.post {
+                val layoutParams = recyclerView.layoutParams as SmartRefreshLayout.LayoutParams
+                layoutParams.bottomMargin = it.height+ dip2px(requireContext(),20f)
+                recyclerView.layoutParams = layoutParams
+            }
+        }
+
     }
 
     private fun initBanner(){
@@ -163,18 +195,20 @@ class RecommendFragment : BaseLazyFragment() {
         val banner = view.findViewById<Banner<*,*>>(R.id.banner)
         banner.addBannerLifecycleObserver(this)
             .setAdapter(MBannerAdapter(mutableListOf)).indicator = CircleIndicator(requireContext())
-
         videoAdapter.addHeaderView(view)
 
     }
 
-    private fun getB() {
-        homeViewModel.getB().observe(this, Observer {
+    private fun getRecommendList() {
+        homeViewModel.getRecommendList().observe(this, Observer {
             if (refreshLayout.isRefreshing) {
                 refreshLayout.finishRefresh()
-            }
-            if (refreshLayout.isLoading) {
+                videoAdapter.replaceData(it)
+            }else if (refreshLayout.isLoading) {
                 refreshLayout.finishLoadMore()
+                videoAdapter.addData(it)
+            }else{
+                videoAdapter.replaceData(it)
             }
         })
     }
@@ -182,14 +216,26 @@ class RecommendFragment : BaseLazyFragment() {
     private fun initSmartRefreshLayout(){
         refreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
             override fun onLoadMore(refreshLayout: RefreshLayout) {
-                getB()
+                getRecommendList()
             }
 
             override fun onRefresh(refreshLayout: RefreshLayout) {
-                getB()
+                getRecommendList()
             }
 
         })
+
+        homeViewModel.refresh.observe(this, Observer {
+            if (!it){
+                if (refreshLayout.isRefreshing) {
+                    refreshLayout.finishRefresh()
+                }
+                if (refreshLayout.isLoading) {
+                    refreshLayout.finishLoadMore()
+                }
+            }
+        })
+
     }
 
 
@@ -204,13 +250,30 @@ class RecommendFragment : BaseLazyFragment() {
 
         override fun convert(holder: BaseViewHolder, item: RecommendTypeBean) {
 
+
             when(item.itemType){
-                TITLE_CODE ->{}
+                TITLE_CODE ->{
+                    holder.setText(R.id.img_video_type,item.type)
+                }
+                BIG_IMG_CODE ->{
+                    holder.setText(R.id.img_video_desc,item.desc)
+                        .setText(R.id.img_video_title,item.title)
+                    val view = holder.getView<ImageView>(R.id.img_video_start)
+//                    Glide.with(view)
+//                        .load(item.imgUrl)
+//                        .into(view)
+                    Glide.with(view)
+                        .setDefaultRequestOptions(RequestOptions().frame(1000).centerCrop())
+                        .load(item.url)
+                        .into(view)
+                }
                 else ->{
+                    holder.setText(R.id.img_video_desc,item.desc)
+                        .setText(R.id.img_video_title,item.title)
                     val view = holder.getView<ImageView>(R.id.img_video_start)
                     Glide.with(view)
-                        .setDefaultRequestOptions(RequestOptions().frame(4000).centerCrop())
-                        .load("https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=993164159,3034267664&fm=26&gp=0.jpg")
+                        .setDefaultRequestOptions(RequestOptions().frame(1000).centerCrop())
+                        .load(item.url)
                         .into(view)
                 }
             }

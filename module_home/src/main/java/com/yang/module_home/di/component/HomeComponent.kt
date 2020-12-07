@@ -5,6 +5,7 @@ import com.yang.common_lib.scope.FragmentScope
 import com.yang.module_home.di.module.HomeModule
 import com.yang.module_home.fragment.HomeFragment
 import com.yang.module_home.fragment.recommend.RecommendFragment
+import com.yang.module_home.fragment.recommend.activity.VideoPlayActivity
 import dagger.Component
 
 
@@ -23,5 +24,6 @@ interface HomeComponent {
 
     fun inject(homeFragment: HomeFragment)
     fun inject(recommendFragment: RecommendFragment)
+    fun inject(videoPlayActivity: VideoPlayActivity)
 
 }

@@ -56,7 +56,7 @@ fun <T> io_main(context: Context): ObservableTransformer<T, T> {
                 }
             }
             .doOnError {
-                Log.i(TAG, "io_main: 请求失败${it.message}")
+                Log.i(TAG, "io_main: 请求失败${it.message} $it")
                 GlobalScope.launch(Dispatchers.Main) {
                     delay(TIME_SHOW_START)
                     remoteMessageDialog?.content = ErrorHandle(it).handle()
@@ -104,7 +104,7 @@ fun <T> io_main(context: Context, startContent: String): ObservableTransformer<T
 
             }
             .doOnError {
-                Log.i(TAG, "io_main: 请求失败${it.message}")
+                Log.i(TAG, "io_main: 请求失败${it.message} $it")
                 GlobalScope.launch(Dispatchers.Main) {
                     delay(TIME_SHOW_START)
                     remoteMessageDialog?.content = ErrorHandle(it).handle()
@@ -163,7 +163,7 @@ fun <T> io_main(
 
             }
             .doOnError {
-                Log.i(TAG, "io_main: 请求失败${it.message}")
+                Log.i(TAG, "io_main: 请求失败${it.message} $it")
                 GlobalScope.launch(Dispatchers.Main) {
                     delay(TIME_SHOW_START)
                     remoteMessageDialog?.content = ErrorHandle(it).handle()

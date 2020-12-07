@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.alibaba.android.arouter.launcher.ARouter
 import com.google.gson.Gson
@@ -77,25 +78,48 @@ class HomeViewModel @Inject constructor(
     }
     var recommendTypeBeans = MutableLiveData<MutableList<RecommendTypeBean>>().apply {
         val mutableListOf = mutableListOf<RecommendTypeBean>()
-        for (i in 0..30) {
+        for (i in 0..31) {
             var recommendTypeBean: RecommendTypeBean
             Log.i("TAG", ": $i  ${i % 8}")
 
             when (i % 8) {
                 0 -> {
                     recommendTypeBean = RecommendTypeBean(RecommendTypeBean.TITLE_CODE)
+                    recommendTypeBean.type = "$i"
+                    recommendTypeBean.id = "$i"
                     mutableListOf.add(recommendTypeBean)
 
                 }
                 1 -> {
                     recommendTypeBean = RecommendTypeBean(RecommendTypeBean.BIG_IMG_CODE)
-                    recommendTypeBean.url = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"
+                    recommendTypeBean.url = "https://vfx.mtime.cn/Video/2019/01/15/mp4/190115161611510728_480.mp4"
+                    recommendTypeBean.title = "更新$i 集"
+                    recommendTypeBean.desc = "今天抢先看 $i"
+                    recommendTypeBean.id = "$i"
+                    recommendTypeBean.imgUrl = "http://jlgl.free.idcfengye.com/test/img/$i.jpg"
                     mutableListOf.add(recommendTypeBean)
                 }
 
                 else -> {
                     recommendTypeBean = RecommendTypeBean(RecommendTypeBean.SMART_IMG_CODE)
-                    recommendTypeBean.url = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"
+                    when {
+                        i%3==0 -> {
+                            recommendTypeBean.url = "http://vfx.mtime.cn/Video/2019/03/09/mp4/190309153658147087.mp4"
+                        }
+                        i%3==1 -> {
+                            recommendTypeBean.url = "http://vfx.mtime.cn/Video/2019/03/12/mp4/190312083533415853.mp4"
+                        }
+                        i%3==2 ->{
+                            recommendTypeBean.url = "http://vfx.mtime.cn/Video/2019/03/19/mp4/190319125415785691.mp4"
+                        }
+                        else -> {
+                            recommendTypeBean.url = "http://vfx.mtime.cn/Video/2019/03/12/mp4/190312143927981075.mp4"
+                        }
+                    }
+                    recommendTypeBean.imgUrl = "http://jlgl.free.idcfengye.com/test/img/$i.jpg"
+                    recommendTypeBean.title = "更新$i 集"
+                    recommendTypeBean.desc = "今天抢先看 $i"
+                    recommendTypeBean.id = "$i"
                     mutableListOf.add(recommendTypeBean)
                 }
             }
@@ -104,18 +128,20 @@ class HomeViewModel @Inject constructor(
         value = mutableListOf
 
 
-        Log.i("ssssssssssss", ": ${Gson().toJson(mutableListOf)}")
 
     }
 
+    val refresh = MutableLiveData<Boolean>().also {
+        it.value = true
+    }
 
     @SuppressLint("CheckResult")
-    fun getB(): MutableLiveData<String> {
-        val s = MutableLiveData<String>()
-        homeRepository.getB().compose(io_main(mContext)).subscribe({
+    fun getRecommendList(): MutableLiveData<MutableList<RecommendTypeBean>> {
+        val s = MutableLiveData<MutableList<RecommendTypeBean>>()
+        homeRepository.getRecommendList().compose(io_main(mContext)).subscribe({
             s.value = it
         }, {
-            s.value = it.message
+            refresh.value = false
         })
         return s
     }

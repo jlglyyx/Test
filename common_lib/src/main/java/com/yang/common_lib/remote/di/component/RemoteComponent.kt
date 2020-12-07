@@ -1,6 +1,7 @@
 package com.yang.common_lib.remote.di.component
 
 import android.content.Context
+import com.google.gson.Gson
 import com.yang.common_lib.api.BaseApiService
 import com.yang.common_lib.base.app.BaseApplication
 import com.yang.common_lib.base.di.component.BaseComponent
@@ -18,4 +19,5 @@ interface RemoteComponent{
     fun getContext(): Context
     fun getRetrofit(): Retrofit
     fun getBaseApiService(): BaseApiService
+    fun gson(): Gson
 }

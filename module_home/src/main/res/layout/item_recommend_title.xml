@@ -7,6 +7,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="标题"
-        android:id="@+id/img_video_title"
+        android:id="@+id/img_video_type"
         android:padding="5dp"/>
 </LinearLayout>
