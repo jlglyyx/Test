@@ -1,10 +1,6 @@
 package com.yang.module_main.activity
 
-import android.util.Log
-import android.widget.Toast
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.alibaba.android.arouter.launcher.ARouter
 import com.google.android.material.tabs.TabLayout

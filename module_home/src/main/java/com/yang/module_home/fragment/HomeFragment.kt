@@ -1,10 +1,14 @@
 package com.yang.module_home.fragment
 
+import android.util.Log
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.ViewModelProvider
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.google.android.material.appbar.AppBarLayout
 import com.yang.common_lib.adapter.TabAndViewPagerAdapter
 import com.yang.common_lib.base.fragment.BaseFragment
 import com.yang.common_lib.constant.RoutePath
@@ -17,6 +21,7 @@ import com.yang.module_home.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.activity_main.tabLayout
 import kotlinx.android.synthetic.main.fra_home.*
 import javax.inject.Inject
+import kotlin.math.abs
 
 
 /**
@@ -59,11 +64,29 @@ class HomeFragment : BaseFragment() {
     }
 
     override fun setStatusPadding(): Boolean {
-        return true
+        return false
     }
 
 
     private fun initTabLayout() {
+
+        appBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+            when {
+                verticalOffset == 0 -> {
+
+                    collapsingToolbarLayout.visibility = GONE
+                }
+                abs(verticalOffset)>=appBarLayout.totalScrollRange -> {
+                    collapsingToolbarLayout.visibility = VISIBLE
+
+                }
+                else -> {
+
+
+                }
+            }
+            Log.i("ssssssssssss", "onOffsetChanged: $verticalOffset  ====${appBarLayout.totalScrollRange}")
+        })
 
 
     }
