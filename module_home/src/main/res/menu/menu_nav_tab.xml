@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/tv_video" android:title="@string/video_nav_tab"/>
+    <item android:id="@+id/tv_comment" android:title="@string/comment_nav_tab"/>
+
+
+</menu>

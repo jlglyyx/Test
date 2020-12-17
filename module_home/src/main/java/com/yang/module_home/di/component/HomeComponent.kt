@@ -3,9 +3,9 @@ package com.yang.module_home.di.component
 import com.yang.common_lib.remote.di.component.RemoteComponent
 import com.yang.common_lib.scope.FragmentScope
 import com.yang.module_home.di.module.HomeModule
-import com.yang.module_home.fragment.HomeFragment
-import com.yang.module_home.fragment.recommend.RecommendFragment
-import com.yang.module_home.fragment.recommend.activity.VideoPlayActivity
+import com.yang.module_home.ui.fragment.HomeFragment
+import com.yang.module_home.ui.fragment.recommend.RecommendFragment
+import com.yang.module_home.ui.fragment.recommend.activity.VideoPlayActivity
 import dagger.Component
 
 

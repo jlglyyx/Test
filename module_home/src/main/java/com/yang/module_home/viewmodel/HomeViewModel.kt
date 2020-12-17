@@ -4,15 +4,12 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.alibaba.android.arouter.launcher.ARouter
-import com.google.gson.Gson
-import com.tencent.bugly.proguard.s
 import com.yang.common_lib.base.viewmodel.BaseViewModel
 import com.yang.common_lib.constant.RoutePath
 import com.yang.common_lib.util.io_main
-import com.yang.module_home.fragment.recommend.bean.RecommendTypeBean
+import com.yang.module_home.ui.fragment.recommend.bean.RecommendTypeBean
 import com.yang.module_home.repository.HomeRepository
 import javax.inject.Inject
 

@@ -1,11 +1,13 @@
-package com.yang.module_home.fragment.recommend
+package com.yang.module_home.ui.fragment.recommend
 
+import android.content.Intent
 import android.graphics.Rect
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
-import android.widget.LinearLayout
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -23,29 +25,24 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
 import com.yang.common_lib.adapter.MBannerAdapter
 import com.yang.common_lib.base.fragment.BaseLazyFragment
 import com.yang.common_lib.constant.RoutePath
-import com.yang.common_lib.constant.RoutePath.HOME_SEARCH_ACTIVITY
 import com.yang.common_lib.data.BannerBean
 import com.yang.common_lib.util.dip2px
 import com.yang.common_lib.util.getRemoteComponent
-import com.yang.common_lib.util.px2dip
 import com.yang.common_lib.util.showShort
 import com.yang.module_home.R
 import com.yang.module_home.di.component.DaggerHomeComponent
 import com.yang.module_home.di.module.HomeModule
 import com.yang.module_home.factory.HomeViewModelFactory
-import com.yang.module_home.fragment.HomeFragment
-import com.yang.module_home.fragment.recommend.bean.RecommendTypeBean
-import com.yang.module_home.fragment.recommend.bean.RecommendTypeBean.Companion.BIG_IMG_CODE
-import com.yang.module_home.fragment.recommend.bean.RecommendTypeBean.Companion.SMART_IMG_CODE
-import com.yang.module_home.fragment.recommend.bean.RecommendTypeBean.Companion.TITLE_CODE
+import com.yang.module_home.ui.fragment.recommend.activity.VideoPlayActivity
+import com.yang.module_home.ui.fragment.recommend.bean.RecommendTypeBean
+import com.yang.module_home.ui.fragment.recommend.bean.RecommendTypeBean.Companion.BIG_IMG_CODE
+import com.yang.module_home.ui.fragment.recommend.bean.RecommendTypeBean.Companion.SMART_IMG_CODE
+import com.yang.module_home.ui.fragment.recommend.bean.RecommendTypeBean.Companion.TITLE_CODE
 import com.yang.module_home.viewmodel.HomeViewModel
 import com.youth.banner.Banner
 import com.youth.banner.indicator.CircleIndicator
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.tabLayout
-import kotlinx.android.synthetic.main.activity_main.viewPager
-import kotlinx.android.synthetic.main.fra_home.*
-import kotlinx.android.synthetic.main.view_public_normal_head_search.*
+import kotlinx.android.synthetic.main.item_recommend_big_img.img_video_start
 import kotlinx.android.synthetic.main.view_public_normal_recycler_view.*
 import javax.inject.Inject
 
@@ -85,9 +82,6 @@ class RecommendFragment : BaseLazyFragment() {
     override fun initView() {
         space = dip2px(requireContext(),6f)
 
-        ll_search.setOnClickListener {
-            ARouter.getInstance().build(HOME_SEARCH_ACTIVITY).navigation()
-        }
 
         initRecyclerView()
         initBanner()
@@ -108,6 +102,7 @@ class RecommendFragment : BaseLazyFragment() {
     }
 
     private fun initRecyclerView() {
+
 
         with(homeViewModel.recommendTypeBeans.value!!){
             videoAdapter = VideoAdapter(mutableListOf())
@@ -139,7 +134,21 @@ class RecommendFragment : BaseLazyFragment() {
                 TITLE_CODE ->{
                     showShort(position)
                 }
+//                BIG_IMG_CODE ->{
+//                    val toBundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
+//                        requireActivity(),
+//                        img_video_start,
+//                        "s"
+//                    )
+//                    ActivityCompat.startActivity(requireContext(),Intent(requireContext(),VideoPlayActivity::class.java).putExtra("recommendTypeBean",gson.toJson(any)),toBundle.toBundle())
+//                }
                 else ->{
+                    val toBundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        requireActivity(),
+                        img_video_start,
+                        "s"
+                    )
+                    //ActivityCompat.startActivity(requireContext(),Intent(requireContext(),VideoPlayActivity::class.java).putExtra("recommendTypeBean",gson.toJson(any)),toBundle.toBundle())
                     ARouter.getInstance().build(RoutePath.HOME_VIDEOPLAY_ACTIVITY).withString("recommendTypeBean",gson.toJson(any)).navigation()
 
                 }

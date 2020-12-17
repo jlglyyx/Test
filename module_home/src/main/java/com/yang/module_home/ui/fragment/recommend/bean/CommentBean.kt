@@ -1,4 +1,4 @@
-package com.yang.module_home.fragment.recommend.bean
+package com.yang.module_home.ui.fragment.recommend.bean
 
 
 /**

@@ -24,23 +24,9 @@
                 app:centerContent="首页"
                 />
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/collapsingToolbarLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                >
-
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    app:layout_collapseMode="pin"
-                    android:background="@color/colorPrimary"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                    />
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-
+            <include layout="@layout/view_public_normal_head_search"
+                app:layout_collapseMode="parallax"
+                app:layout_scrollFlags="scroll|enterAlways" />
             <com.google.android.material.tabs.TabLayout
                 android:id="@id/tabLayout"
                 style="@style/MTabLayout"

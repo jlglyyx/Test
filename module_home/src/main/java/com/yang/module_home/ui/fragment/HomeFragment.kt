@@ -1,17 +1,17 @@
-package com.yang.module_home.fragment
+package com.yang.module_home.ui.fragment
 
 import android.util.Log
-import android.view.View.GONE
-import android.view.View.VISIBLE
-import android.widget.LinearLayout
+import android.view.View.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.ViewModelProvider
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.android.arouter.launcher.ARouter
 import com.google.android.material.appbar.AppBarLayout
 import com.yang.common_lib.adapter.TabAndViewPagerAdapter
 import com.yang.common_lib.base.fragment.BaseFragment
 import com.yang.common_lib.constant.RoutePath
+import com.yang.common_lib.constant.RoutePath.HOME_SEARCH_ACTIVITY
 import com.yang.common_lib.util.getRemoteComponent
 import com.yang.module_home.R
 import com.yang.module_home.di.component.DaggerHomeComponent
@@ -20,6 +20,7 @@ import com.yang.module_home.factory.HomeViewModelFactory
 import com.yang.module_home.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.activity_main.tabLayout
 import kotlinx.android.synthetic.main.fra_home.*
+import kotlinx.android.synthetic.main.view_public_normal_head_search.*
 import javax.inject.Inject
 import kotlin.math.abs
 
@@ -51,7 +52,9 @@ class HomeFragment : BaseFragment() {
         fragments = homeViewModel.fragments.value!!
         titles = homeViewModel.titles.value!!
         initViewPager()
-
+        ll_search.setOnClickListener {
+            ARouter.getInstance().build(HOME_SEARCH_ACTIVITY).navigation()
+        }
     }
 
 
@@ -70,17 +73,31 @@ class HomeFragment : BaseFragment() {
 
     private fun initTabLayout() {
 
+        var isOpenFirst = true
+        var isCloseFirst = true
+
         appBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             when {
                 verticalOffset == 0 -> {
+                    if (isOpenFirst){
+                        ll_search.visibility = VISIBLE
+                        isOpenFirst = false
+                        isCloseFirst = true
+                    }
 
-                    collapsingToolbarLayout.visibility = GONE
+
                 }
                 abs(verticalOffset)>=appBarLayout.totalScrollRange -> {
-                    collapsingToolbarLayout.visibility = VISIBLE
+                    if (isCloseFirst){
+                        ll_search.visibility = INVISIBLE
+                        isCloseFirst = false
+                        isOpenFirst = true
+                    }
+
 
                 }
                 else -> {
+
 
 
                 }

@@ -1,8 +1,7 @@
 package com.yang.module_home.repository
 
-import com.yang.common_lib.handle.ErrorHandle
 import com.yang.module_home.api.HomeApiService
-import com.yang.module_home.fragment.recommend.bean.RecommendTypeBean
+import com.yang.module_home.ui.fragment.recommend.bean.RecommendTypeBean
 import io.reactivex.Observable
 import javax.inject.Inject
 

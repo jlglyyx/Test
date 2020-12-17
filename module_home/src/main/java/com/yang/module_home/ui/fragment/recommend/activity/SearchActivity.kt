@@ -1,4 +1,4 @@
-package com.yang.module_home.fragment.recommend.activity
+package com.yang.module_home.ui.fragment.recommend.activity
 
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.yang.common_lib.base.activity.BaseActivity
