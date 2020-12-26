@@ -143,44 +143,19 @@ class VideoPlayActivity : BaseActivity() {
             tabLayout.addTab(tabLayout.newTab().setText(it))
         }
 
-        var isOpenFirst = true
-        var isCloseFirst = true
 
-        appBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-            when {
-                verticalOffset == 0 -> {
-                }
-                abs(verticalOffset) >= appBarLayout.totalScrollRange -> {
-                    if (isCloseFirst) {
-                        ll_video.visibility = View.INVISIBLE
-                        isCloseFirst = false
-                        isOpenFirst = true
-                    }
-                }
-                else -> {
-                    if (isOpenFirst) {
-                        ll_video.visibility = View.VISIBLE
-                        isOpenFirst = false
-                        isCloseFirst = true
-                    }
-                }
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+
+
             }
 
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
 
 
+            }
 
-            tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
-                override fun onTabReselected(tab: TabLayout.Tab?) {
-
-
-                }
-
-                override fun onTabUnselected(tab: TabLayout.Tab?) {
-
-
-                }
-
-                override fun onTabSelected(tab: TabLayout.Tab) {
+            override fun onTabSelected(tab: TabLayout.Tab) {
 //                    when (tab.position){
 //                        0 -> {
 //
@@ -191,12 +166,11 @@ class VideoPlayActivity : BaseActivity() {
 //                        }
 //                    }
 
-                    isRecyclerViewScroll = true
+                isRecyclerViewScroll = true
 
-                }
+            }
 
 
-            })
         })
 
     }

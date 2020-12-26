@@ -4,21 +4,55 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="3dp">
 
-    <ImageView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:id="@+id/img_video_start"/>
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:id="@+id/img_video_start"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="更新至第8集"
+            android:textSize="@dimen/sp_12"
+            android:textColor="@color/white"
+            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_alignParentEnd="true"
+            android:layout_alignBottom="@+id/img_video_start"
+            android:padding="5dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VIP"
+            android:textSize="@dimen/sp_12"
+            android:paddingHorizontal="@dimen/dp_8"
+            android:paddingVertical="@dimen/dp_1"
+            android:textColor="@color/white"
+            android:background="@drawable/shape_video_vip_bg"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginEnd="@dimen/dp_5"
+            />
+    </RelativeLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="哈哈哈哈（更新）"
+        android:text="小风暴（超前点播）"
+        android:textSize="@dimen/sp_14"
+        android:textColor="@color/black"
+        android:paddingStart="@dimen/dp_10"
         android:id="@+id/img_video_title"
-        android:padding="5dp"/>
+        android:paddingVertical="@dimen/dp_5"
+        />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="今日抢先看"
-        android:id="@+id/img_video_desc"
-        android:padding="5dp"/>
+        android:paddingStart="@dimen/dp_10"
+        android:textSize="@dimen/sp_12"
+        android:id="@+id/img_video_desc" />
 
 </LinearLayout>

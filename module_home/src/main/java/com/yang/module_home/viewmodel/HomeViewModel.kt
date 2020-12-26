@@ -122,6 +122,12 @@ class HomeViewModel @Inject constructor(
             }
 
         }
+
+        mutableListOf[0].type = "猜你会追"
+        mutableListOf[1].type = "大家都在刷"
+        mutableListOf[2].type = "热播电视剧"
+        mutableListOf[3].type = "动漫·二次元"
+        mutableListOf[4].type = "精彩电影推荐"
         value = mutableListOf
 
 
@@ -135,7 +141,7 @@ class HomeViewModel @Inject constructor(
     @SuppressLint("CheckResult")
     fun getRecommendList(): MutableLiveData<MutableList<RecommendTypeBean>> {
         val s = MutableLiveData<MutableList<RecommendTypeBean>>()
-        homeRepository.getRecommendList().compose(io_main(mContext)).subscribe({
+        homeRepository.getRecommendList().compose(io_main()).subscribe({
             s.value = it
         }, {
             refresh.value = false

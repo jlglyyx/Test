@@ -10,4 +10,4 @@ package com.yang.common_lib.remote.di.response
  *
  * @Date 2020/12/4 15:59
  */
-data class Result<T>(val data:T,val code:String,val message:String,val success:Boolean)
+data class MResult<T>(val data:T, val code:String, val message:String, val success:Boolean)

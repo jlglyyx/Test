@@ -70,6 +70,7 @@ ext {
             "material"                      : "com.google.android.material:material:1.2.1",
             //视频播放器
             "GSYVideoPlayer"                : "com.shuyu:GSYVideoPlayer:8.0.0",
+            "rxbinding"                : "com.jakewharton.rxbinding4:rxbinding-material:4.0.0",
 
     ]
 

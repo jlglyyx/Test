@@ -1,12 +1,10 @@
 package com.yang.module_home.ui.fragment.recommend
 
-import android.content.Intent
 import android.graphics.Rect
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
-import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -206,6 +204,8 @@ class RecommendFragment : BaseLazyFragment() {
             .setAdapter(MBannerAdapter(mutableListOf)).indicator = CircleIndicator(requireContext())
         videoAdapter.addHeaderView(view)
 
+
+
     }
 
     private fun getRecommendList() {
@@ -265,8 +265,8 @@ class RecommendFragment : BaseLazyFragment() {
                     holder.setText(R.id.img_video_type,item.type)
                 }
                 BIG_IMG_CODE ->{
-                    holder.setText(R.id.img_video_desc,item.desc)
-                        .setText(R.id.img_video_title,item.title)
+                    //holder.setText(R.id.img_video_desc,item.desc)
+                    //holder.setText(R.id.img_video_title,item.title)
                     val view = holder.getView<ImageView>(R.id.img_video_start)
 //                    Glide.with(view)
 //                        .load(item.imgUrl)
@@ -277,8 +277,8 @@ class RecommendFragment : BaseLazyFragment() {
                         .into(view)
                 }
                 else ->{
-                    holder.setText(R.id.img_video_desc,item.desc)
-                        .setText(R.id.img_video_title,item.title)
+                    //holder.setText(R.id.img_video_desc,item.desc)
+                    //holder.setText(R.id.img_video_title,item.title)
                     val view = holder.getView<ImageView>(R.id.img_video_start)
                     Glide.with(view)
                         .setDefaultRequestOptions(RequestOptions().frame(1000).centerCrop())

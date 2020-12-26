@@ -68,6 +68,7 @@ dependencies {
     api rootProject.ext.dependencies['arouter-api']
     api rootProject.ext.dependencies['material']
     api rootProject.ext.dependencies['GSYVideoPlayer']
+    api rootProject.ext.dependencies['rxbinding']
 
 
 
@@ -90,5 +91,6 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
     api 'com.github.tbruyelle:rxpermissions:0.10.2'
     api 'com.youth.banner:banner:2.1.0'
+    api 'com.hyman:flowlayout-lib:1.1.2'
 
 }

@@ -1,6 +1,11 @@
 @file:JvmName("AppUtils")
 package com.yang.common_lib.util
 import android.content.Context
+import android.view.View
+import com.jakewharton.rxbinding4.view.clicks
+import com.yang.common_lib.constant.Constant.CLICK_TIME
+import io.reactivex.rxjava3.core.Observable
+import java.util.concurrent.TimeUnit
 
 
 /*
@@ -44,4 +49,8 @@ fun dip2px(context: Context, dpValue: Float): Int {
 fun px2dip(context: Context, pxValue: Float): Int {
     val scale = context.resources.displayMetrics.density
     return (pxValue / scale + 0.5f).toInt()
+}
+
+fun clicks(view:View): Observable<Unit> {
+    return view.clicks().throttleFirst(CLICK_TIME,TimeUnit.MILLISECONDS)
 }

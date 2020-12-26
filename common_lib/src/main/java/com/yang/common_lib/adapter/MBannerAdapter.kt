@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.yang.common_lib.data.BannerBean
+import com.yang.common_lib.util.showShort
 import com.youth.banner.adapter.BannerAdapter
 
 
@@ -27,7 +28,6 @@ class MBannerAdapter(mData: MutableList<BannerBean>) : BannerAdapter<BannerBean,
 
         var shapeableImageView:ShapeableImageView = itemView as ShapeableImageView
 
-
     }
 
     override fun onCreateHolder(parent: ViewGroup, viewType: Int): BannerViewHolder {
@@ -41,6 +41,9 @@ class MBannerAdapter(mData: MutableList<BannerBean>) : BannerAdapter<BannerBean,
     }
 
     override fun onBindView(holder: BannerViewHolder, data: BannerBean, position: Int, size: Int) {
+        holder.shapeableImageView.setOnClickListener {
+            showShort("$position ${data.url}")
+        }
         Glide.with(holder.shapeableImageView).load(data.url).into(holder.shapeableImageView)
     }
 
