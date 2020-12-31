@@ -9,6 +9,8 @@
         android:name="com.yang.common_lib.base.app.BaseApplication"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.fragment.recommend.activity.VideoPlayActivity" android:configChanges="orientation|keyboardHidden|screenSize"/>
+
+        <activity android:name=".ui.fragment.recommend.activity.UploadFileActivity"/>
     </application>
 
 

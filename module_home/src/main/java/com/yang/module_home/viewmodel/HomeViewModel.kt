@@ -6,11 +6,14 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import com.alibaba.android.arouter.launcher.ARouter
+import com.tencent.bugly.proguard.s
 import com.yang.common_lib.base.viewmodel.BaseViewModel
 import com.yang.common_lib.constant.RoutePath
 import com.yang.common_lib.util.io_main
 import com.yang.module_home.ui.fragment.recommend.bean.RecommendTypeBean
 import com.yang.module_home.repository.HomeRepository
+import io.reactivex.Observable
+import okhttp3.RequestBody
 import javax.inject.Inject
 
 
@@ -77,7 +80,6 @@ class HomeViewModel @Inject constructor(
         val mutableListOf = mutableListOf<RecommendTypeBean>()
         for (i in 0..31) {
             var recommendTypeBean: RecommendTypeBean
-            Log.i("TAG", ": $i  ${i % 8}")
 
             when (i % 8) {
                 0 -> {
@@ -147,6 +149,17 @@ class HomeViewModel @Inject constructor(
             refresh.value = false
         })
         return s
+    }
+
+    @SuppressLint("CheckResult")
+    fun uploadFile(files:MutableMap<String, RequestBody>) : String {
+        var message = ""
+        homeRepository.uploadFile(files).compose(io_main(mContext,"上传中。。。","上传成功")).subscribe({
+            message = it
+        },{
+            message = it.message.toString()
+        })
+        return message
     }
 
 

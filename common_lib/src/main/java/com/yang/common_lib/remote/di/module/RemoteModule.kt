@@ -110,16 +110,24 @@ class RemoteModule {
     }
 
     private fun getBody(request: Request):String{
-        val buffer = Buffer()
-        val body = request.body()
-        body?.writeTo(buffer)
-        val contentType = body?.contentType()
-        val charset = contentType?.charset(Charsets.UTF_8)
-        return if (charset != null) {
-            buffer.readString(charset)
-        }else{
-            "无请求体"
+        try {
+            val buffer = Buffer()
+            val body = request.body()
+            if (body?.contentLength()!! >=1000000){
+                return "请求体太大了，打印OOM"
+            }
+            body?.writeTo(buffer)
+            val contentType = body?.contentType()
+            val charset = contentType?.charset(Charsets.UTF_8)
+            return if (charset != null) {
+                buffer.readString(charset)
+            }else{
+                "无请求体"
+            }
+        }catch (e:Exception){
+            Log.i(TAG, "getBody: ${e.message}")
         }
+       return ""
     }
 
     private fun showLogCompletion(log:String,size:Int ){

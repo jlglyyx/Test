@@ -46,7 +46,6 @@ import com.shuyu.gsyvideoplayer.utils.OrientationUtils
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.yang.common_lib.base.activity.BaseActivity
 import com.yang.common_lib.constant.RoutePath
-import com.yang.common_lib.util.getPath
 import com.yang.common_lib.util.getRemoteComponent
 import com.yang.common_lib.util.showShort
 import com.yang.module_home.R
@@ -422,9 +421,9 @@ class VideoPlayActivity : BaseActivity() {
         }
         if (requestCode == FILE_CODE && resultCode == Activity.RESULT_OK) {
             val uri = data.data as Uri
-            val path = getPath(this, uri)
-            Log.i("TAG", "onActivityResult: ${uri.path} ${path.toString()}")
-            initVideo(path.toString())
+            //val path = getPath(this, uri)
+//            Log.i("TAG", "onActivityResult: ${uri.path} ${path.toString()}")
+//            initVideo(path.toString())
 
         }
     }

@@ -76,7 +76,7 @@ class MineFragment : BaseFragment() {
                 .url("https://dl.softmgr.qq.com/original/net_app/QQPhoneManager_990420.5239.exe")
                 .suffix("exe")
                 .childMkdirPath("exe")
-                .build()
+                .   build()
         }
 
         //Glide.with(this).load("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1607509937585&di=97b9e651110aea14947abc0a9fcf1bc8&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F07448b820b27cd7394c0836161e8e76f95d016da27e8a-LtXDaF_fw658").into(value)
@@ -96,7 +96,8 @@ class MineFragment : BaseFragment() {
 
         }
 
-        activity?.bindService(Intent(requireActivity(),DownLoadService::class.java),serviceConnection,BIND_AUTO_CREATE)
+        activity?.bindService(Intent(requireActivity(),
+            DownLoadService::class.java),serviceConnection,BIND_AUTO_CREATE)
     }
 
     override fun initViewModel() {

@@ -3,13 +3,12 @@ package com.yang.common_lib.down
 import android.os.Environment
 import android.text.TextUtils
 import android.util.Log
-import com.yang.common_lib.util.showShort
+import com.yang.common_lib.down.DownLoadListener
 import java.io.File
 import java.io.RandomAccessFile
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.concurrent.Executors
-import java.util.concurrent.ThreadPoolExecutor
 
 
 /**

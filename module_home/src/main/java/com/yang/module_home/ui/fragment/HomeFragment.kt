@@ -1,5 +1,6 @@
 package com.yang.module_home.ui.fragment
 
+import android.content.Intent
 import android.util.Log
 import android.view.View.*
 import androidx.fragment.app.Fragment
@@ -17,6 +18,7 @@ import com.yang.module_home.R
 import com.yang.module_home.di.component.DaggerHomeComponent
 import com.yang.module_home.di.module.HomeModule
 import com.yang.module_home.factory.HomeViewModelFactory
+import com.yang.module_home.ui.fragment.recommend.activity.UploadFileActivity
 import com.yang.module_home.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.activity_main.tabLayout
 import kotlinx.android.synthetic.main.fra_home.*
@@ -54,6 +56,10 @@ class HomeFragment : BaseFragment() {
         initViewPager()
         ll_search.setOnClickListener {
             ARouter.getInstance().build(HOME_SEARCH_ACTIVITY).navigation()
+        }
+        img_add.setOnClickListener {
+
+            startActivity(Intent(requireContext(),UploadFileActivity::class.java))
         }
     }
 
@@ -102,7 +108,6 @@ class HomeFragment : BaseFragment() {
 
                 }
             }
-            Log.i("ssssssssssss", "onOffsetChanged: $verticalOffset  ====${appBarLayout.totalScrollRange}")
         })
 
 

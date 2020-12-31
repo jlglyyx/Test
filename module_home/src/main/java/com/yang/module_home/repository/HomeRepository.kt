@@ -3,6 +3,7 @@ package com.yang.module_home.repository
 import com.yang.module_home.api.HomeApiService
 import com.yang.module_home.ui.fragment.recommend.bean.RecommendTypeBean
 import io.reactivex.Observable
+import okhttp3.RequestBody
 import javax.inject.Inject
 
 
@@ -25,6 +26,16 @@ class HomeRepository @Inject constructor(private val homeApiService: HomeApiServ
                 }
                 it.data
             }
+    }
+
+
+    fun uploadFile(files:MutableMap<String, RequestBody>) : Observable<String>{
+        return homeApiService.uploadFile(files).map {
+            if (!it.success){
+                throw Exception(it.message)
+            }
+            it.data
+        }
     }
 
 }

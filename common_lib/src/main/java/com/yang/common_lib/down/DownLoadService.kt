@@ -1,6 +1,5 @@
 package com.yang.common_lib.down
 
-import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.NotificationManager.IMPORTANCE_HIGH
@@ -9,12 +8,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Binder
 import android.os.Build
+import android.os.Environment
 import android.os.IBinder
-import android.util.Log
-import androidx.annotation.RequiresApi
-import androidx.core.app.NotificationCompat
-import com.yang.common_lib.R
-import java.net.URL
+import com.yang.common_lib.down.DownLoadTask
+import java.io.File
 
 
 /**
@@ -31,7 +28,9 @@ class DownLoadService : Service() {
 
     override fun onBind(intent: Intent?): IBinder {
 
-        return DownloadBinder(this)
+        return DownloadBinder(
+            this
+        )
 
     }
 
@@ -42,7 +41,9 @@ class DownLoadService : Service() {
             var i = 0
         }
         fun newBuilder(): StartBuilder {
-            return StartBuilder(service)
+            return StartBuilder(
+                service
+            )
         }
 
         class StartBuilder(private val service: DownLoadService) {
@@ -52,6 +53,9 @@ class DownLoadService : Service() {
             private var childMkdirPath: String
             private var fileName: String
             private var suffix: String
+            private var haveNotification:Boolean
+            private var urlType:String
+            private var threadCount:Int
 
 
 
@@ -61,6 +65,9 @@ class DownLoadService : Service() {
                 childMkdirPath = ""
                 fileName = ""
                 suffix = ""
+                haveNotification = false
+                urlType = Environment.getExternalStorageDirectory().toString()
+                threadCount = 10
             }
 
             fun url(url: String): StartBuilder {
@@ -87,17 +94,35 @@ class DownLoadService : Service() {
                 this.suffix = suffix
                 return this
             }
+            fun haveNotification(haveNotification: Boolean): StartBuilder {
+                this.haveNotification = haveNotification
+                return this
+            }
+            fun urlType(urlType: String): StartBuilder {
+                this.urlType = urlType
+                return this
+            }
+            fun threadCount(threadCount: Int): StartBuilder {
+                this.threadCount = threadCount
+                return this
+            }
 
 
-            fun build() {
-                DownLoadMoreThread.Builder()
+            fun build() : File?{
+               return DownLoadMoreThread.Builder()
                     .url(url)
                     .parentMkdirPath(parentMkdirPath)
                     .childMkdirPath(childMkdirPath)
                     .fileName(fileName)
                     .suffix(suffix)
-                    .downLoadListener(DownLoadTask(service))
-                    .threadCount(10)
+                    .haveNotification(false)
+                    .downLoadListener(
+                        DownLoadTask(
+                            service
+                        )
+                    )
+                    .urlType(urlType)
+                    .threadCount(threadCount)
                     .build().startDownLoad(i++)
             }
 

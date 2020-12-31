@@ -40,7 +40,6 @@ class MToolbarView :RelativeLayout {
     private lateinit var leftTvContent: String
     private lateinit var centerTvContent: String
     private lateinit var rightTvContent: String
-    private lateinit var rl_toolbar:RelativeLayout
 
     constructor(context: Context?) : this(context,null)
     constructor(context: Context?, attrs: AttributeSet?) : this(context, attrs,0)
@@ -69,11 +68,6 @@ class MToolbarView :RelativeLayout {
         leftTv = view.findViewById(R.id.tv_content_left)
         centerTv = view.findViewById(R.id.tv_content_center)
         rightTv = view.findViewById(R.id.tv_content_right)
-        rl_toolbar = view.findViewById(R.id.rl_toolbar)
-
-        val layoutParams = rl_toolbar.layoutParams as LinearLayout.LayoutParams
-        layoutParams.topMargin = getStatusBarHeight(context)
-        rl_toolbar.layoutParams = layoutParams
 
         val typedArray: TypedArray = context.obtainStyledAttributes(attrs, R.styleable.HeadToolbarView)
         leftTv.text = typedArray.getString(R.styleable.HeadToolbarView_leftContent)
@@ -96,7 +90,7 @@ class MToolbarView :RelativeLayout {
         val aBoolean1 =
             typedArray.getBoolean(R.styleable.HeadToolbarView_isCenterContent, false)
         val aBoolean2 =
-            typedArray.getBoolean(R.styleable.HeadToolbarView_isRighrContent, true)
+            typedArray.getBoolean(R.styleable.HeadToolbarView_isRightContent, true)
         val aBoolean3 =
             typedArray.getBoolean(R.styleable.HeadToolbarView_isLeftImg, false)
         val aBoolean4 =

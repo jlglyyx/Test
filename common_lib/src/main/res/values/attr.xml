@@ -8,7 +8,7 @@
         <attr name="rightImg" format="reference|color"/>
         <attr name="isLeftContent" format="boolean"/>
         <attr name="isCenterContent" format="boolean"/>
-        <attr name="isRighrContent" format="boolean"/>
+        <attr name="isRightContent" format="boolean"/>
         <attr name="isLeftImg" format="boolean"/>
         <attr name="isRightImg" format="boolean"/>
     </declare-styleable>

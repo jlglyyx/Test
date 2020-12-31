@@ -6,6 +6,8 @@ import android.content.Context
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.yang.common_lib.R
+import com.yang.common_lib.down.DownLoadListener
+import com.yang.common_lib.down.DownLoadService
 
 
 /**
@@ -17,7 +19,8 @@ import com.yang.common_lib.R
  *
  * @Date 2020/12/25 9:15
  */
-class DownLoadTask constructor(private val service: DownLoadService) : DownLoadListener {
+class DownLoadTask constructor(private val service: DownLoadService) :
+    DownLoadListener {
 
     companion object {
         private const val TAG = "DownLoadTask"

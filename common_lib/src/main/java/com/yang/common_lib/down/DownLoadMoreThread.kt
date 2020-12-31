@@ -3,17 +3,13 @@ package com.yang.common_lib.down
 import android.os.Environment
 import android.text.TextUtils
 import android.util.Log
-import com.yang.common_lib.util.io_main
-import com.yang.common_lib.util.showShort
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.yang.common_lib.down.DownLoadListener
+import kotlinx.coroutines.*
 import java.io.File
 import java.io.RandomAccessFile
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.concurrent.Executors
-import java.util.concurrent.ThreadPoolExecutor
 
 
 /**
@@ -37,6 +33,9 @@ class DownLoadMoreThread(builder: Builder) {
     private var suffix: String? = null
     private var downLoadListener: DownLoadListener? = null
     private var threadCount = 10
+    private var haveNotification:Boolean
+    private var urlType:String
+    private lateinit var downFile:File
 
     init {
         url = builder.url
@@ -46,6 +45,8 @@ class DownLoadMoreThread(builder: Builder) {
         suffix = builder.suffix
         downLoadListener = builder.downLoadListener
         threadCount = builder.threadCount
+        haveNotification = builder.haveNotification
+        urlType = builder.urlType
     }
 
 
@@ -61,20 +62,33 @@ class DownLoadMoreThread(builder: Builder) {
      *
      * 下载
      * */
-    fun startDownLoad(notificationId: Int) {
-        executors.execute {
-            try {
-                val downLoadLength = getDownLoadLength(url!!)
-                if (downLoadLength == 0) {//获取文件长度为0
-                    downLoadListener?.onFailed("文件不存在", notificationId)
-                    return@execute
-                }
-                down(url!!, downLoadLength, suffix!!, notificationId)
-            } catch (e: Exception) {
-                downLoadListener?.onFailed("未知异常", notificationId)
-            }
+    fun startDownLoad(notificationId: Int) : File? {
 
+
+        return runBlocking{
+            val await = GlobalScope.async(Dispatchers.IO) {
+                try {
+                    val downLoadLength = getDownLoadLength(url!!)
+                    if (downLoadLength == 0) {//获取文件长度为0
+                        if (haveNotification) {
+                            downLoadListener?.onFailed("文件不存在", notificationId)
+                        }
+                        return@async null
+                    }
+                    down(url!!, downLoadLength, suffix!!, notificationId)
+                    downFile =
+                        File("${urlType}/${parentMkdirPath}/${childMkdirPath}/${fileName}.${suffix}")
+                    downFile
+                } catch (e: Exception) {
+                    if (haveNotification) {
+                        downLoadListener?.onFailed("未知异常", notificationId)
+                    }
+                    null
+                }
+            }.await()
+            await
         }
+
     }
 
 
@@ -95,7 +109,7 @@ class DownLoadMoreThread(builder: Builder) {
         Log.i(TAG, "notificationId: $notificationId")
         var fileIndex: Long = 0
         val mkdirFile =
-            File("${Environment.getExternalStorageDirectory()}/${parentMkdirPath}/${childMkdirPath}")
+            File("${urlType}/${parentMkdirPath}/${childMkdirPath}")
         if (!mkdirFile.exists()) {//文件夹
             mkdirFile.mkdirs()
         }
@@ -104,21 +118,36 @@ class DownLoadMoreThread(builder: Builder) {
             fileIndex = file.length()
         }
         if (fileIndex == downLoadLength.toLong()) {
-            downLoadListener?.onSuccess("$url", notificationId)
+            if (haveNotification) {
+                downLoadListener?.onSuccess("$url", notificationId)
+            }
             return
         }
         val itemLength = downLoadLength / threadCount
         for (i in 0 until threadCount){
-            MDownLoadThread(url, (i*itemLength).toLong(), ((i+1)*itemLength).toLong(),file,i,downLoadListener!!,"线程$i").start()
+            MDownLoadThread(
+                url,
+                (i * itemLength).toLong(),
+                ((i + 1) * itemLength).toLong(),
+                file,
+                i,
+                downLoadListener!!,
+                "线程$i"
+            ).start()
         }
         GlobalScope.launch(Dispatchers.IO) {
             while (countProcess <= 100){
                 Log.i(TAG, "ssssssssssss: $countProcess")
-                downLoadListener?.onProgress(countProcess, notificationId)
+                if (haveNotification) {
+                    downLoadListener?.onProgress(countProcess, notificationId)
+                }
             }
             Log.i(TAG, "ssssssssssssa: $countProcess")
-            downLoadListener?.onSuccess(url, notificationId+1)
-            countProcess = 0
+            if (haveNotification) {
+                downLoadListener?.onSuccess(url, notificationId + 1)
+                countProcess = 0
+            }
+
         }
 
     }
@@ -149,6 +178,8 @@ class DownLoadMoreThread(builder: Builder) {
         var suffix: String? = null
         var downLoadListener: DownLoadListener? = null
         var threadCount = 10
+        var haveNotification:Boolean
+        var urlType:String
 
         init {
             url = ""
@@ -157,6 +188,8 @@ class DownLoadMoreThread(builder: Builder) {
             fileName = "${System.currentTimeMillis()}"
             suffix = "jpg"
             threadCount = 10
+            haveNotification = false
+            urlType = Environment.getExternalStorageDirectory().toString()
         }
 
         fun url(url: String): Builder {
@@ -208,6 +241,18 @@ class DownLoadMoreThread(builder: Builder) {
                 return this
             }
             this.threadCount = threadCount
+            return this
+        }
+
+        fun haveNotification(haveNotification: Boolean): Builder {
+            this.haveNotification = haveNotification
+            return this
+        }
+        fun urlType(urlType: String): Builder {
+            if (TextUtils.isEmpty(urlType)) {
+                return this
+            }
+            this.urlType = urlType
             return this
         }
 

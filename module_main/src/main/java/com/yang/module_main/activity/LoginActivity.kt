@@ -1,5 +1,6 @@
 package com.yang.module_main.activity
 
+import android.net.Uri
 import android.text.TextUtils
 import android.util.Log
 import androidx.lifecycle.Observer
@@ -44,6 +45,8 @@ class LoginActivity : BaseActivity() {
     }
 
     override fun initView() {
+
+        initVideoView()
 
         btn_login.setOnClickListener {
             checkForm()
@@ -92,6 +95,31 @@ class LoginActivity : BaseActivity() {
             return
         }
         login()
+    }
+
+
+    private fun initVideoView(){
+        //loginVideoView.setVideoURI(Uri.parse("android.resource://$packageName/${R.raw.splash}"))
+        loginVideoView.setVideoPath("/data/user/0/com.yang.test/files/video/splash/splash.mp4")
+        //loginVideoView.setVideoPath(Uri.parse("\"android.resource://\" + packageName + \"/\" + R.raw.splash"))
+//        loginVideoView.setVideoPath("http://192.168.31.60:8080/files/splash.mp4")
+        loginVideoView.setOnPreparedListener {
+            it.setVolume(0f,0f)
+            it.start()
+        }
+        loginVideoView.setOnCompletionListener {
+            loginVideoView.start()
+        }
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        initVideoView()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        loginVideoView.stopPlayback()
     }
 
 }
