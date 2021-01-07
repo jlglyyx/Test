@@ -40,8 +40,9 @@ import com.google.gson.Gson
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
 import com.shuyu.gsyvideoplayer.listener.GSYSampleCallBack
-import com.shuyu.gsyvideoplayer.listener.GSYStateUiListener
+import com.shuyu.gsyvideoplayer.player.IjkPlayerManager
 import com.shuyu.gsyvideoplayer.utils.Debuger
+import com.shuyu.gsyvideoplayer.utils.GSYVideoType
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.yang.common_lib.base.activity.BaseActivity
@@ -63,6 +64,7 @@ import kotlinx.android.synthetic.main.act_video_paly.tabLayout
 import kotlinx.android.synthetic.main.fra_home.*
 import kotlinx.android.synthetic.main.view_public_normal_head_search.*
 import kotlinx.android.synthetic.main.view_video_head.*
+import tv.danmaku.ijk.media.player.IjkMediaPlayer
 import javax.inject.Inject
 import kotlin.math.abs
 
@@ -323,6 +325,11 @@ class VideoPlayActivity : BaseActivity() {
 
 
     private fun initVideo(url:String) {
+        //切换绘制模式
+        GSYVideoType.setRenderType(GSYVideoType.SUFRACE)
+
+        //ijk关闭log
+        IjkPlayerManager.setLogLevel(IjkMediaPlayer.IJK_LOG_SILENT)
         detailPlayer.backButton.setOnClickListener {
             finish()
         }
@@ -427,7 +434,6 @@ class VideoPlayActivity : BaseActivity() {
 
         }
     }
-
 
 
 

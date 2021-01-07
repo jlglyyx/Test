@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="HeadToolbarView">
-        <attr name="leftContent" format="string"/>
-        <attr name="centerContent" format="string"/>
-        <attr name="rightContent" format="string"/>
-        <attr name="leftImg" format="reference|color"/>
-        <attr name="rightImg" format="reference|color"/>
-        <attr name="isLeftContent" format="boolean"/>
-        <attr name="isCenterContent" format="boolean"/>
-        <attr name="isRightContent" format="boolean"/>
-        <attr name="isLeftImg" format="boolean"/>
-        <attr name="isRightImg" format="boolean"/>
+        <attr name="leftContent" format="string" />
+        <attr name="centerContent" format="string" />
+        <attr name="rightContent" format="string" />
+        <attr name="leftImg" format="reference|color" />
+        <attr name="rightImg" format="reference|color" />
+        <attr name="isLeftContent" format="boolean" />
+        <attr name="isCenterContent" format="boolean" />
+        <attr name="isRightContent" format="boolean" />
+        <attr name="isLeftImg" format="boolean" />
+        <attr name="isRightImg" format="boolean" />
+    </declare-styleable>
+
+
+    <declare-styleable name="PullZoomView">
+        <attr name="pzv_sensitive" format="float" />
+        <attr name="pzv_isZoomEnable" format="boolean" />
+        <attr name="pzv_isParallax" format="boolean" />
+        <attr name="pzv_zoomTime" format="integer" />
     </declare-styleable>
 </resources>

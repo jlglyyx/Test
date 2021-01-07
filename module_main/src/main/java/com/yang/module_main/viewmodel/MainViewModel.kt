@@ -13,6 +13,7 @@ import com.yang.common_lib.handle.ErrorHandle
 import com.yang.common_lib.util.io_main
 import com.yang.common_lib.util.remoteMessageDialog
 import com.yang.module_main.data.UserBean
+import com.yang.module_main.data.VideoBean
 import com.yang.module_main.repository.MainRepository
 import kotlinx.coroutines.*
 import javax.inject.Inject
@@ -37,6 +38,7 @@ class MainViewModel @Inject constructor(
     }
 
     private var userInfo = MutableLiveData<UserBean>()
+    private var videoBean = MutableLiveData<VideoBean>()
     fun login(): MutableLiveData<UserBean> {
         val remoteMessageDialog = RemoteMessageDialog(mContext, "登录中")
         viewModelScope.launch {
@@ -62,6 +64,25 @@ class MainViewModel @Inject constructor(
             remoteMessageDialog.dismiss()
         }
         return userInfo
+    }
+    fun splashVideo(): MutableLiveData<VideoBean> {
+        viewModelScope.launch {
+           viewModelScope.launch (Dispatchers.IO) {
+                try {
+                    mainRepository.splashVideo().run {
+                        if (this.success) {
+                            videoBean.postValue(this.data)
+                        }else{
+                            this.message
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.i(TAG, "login: $e")
+                    ErrorHandle(e).handle()
+                }
+            }
+        }
+        return videoBean
     }
 
 }

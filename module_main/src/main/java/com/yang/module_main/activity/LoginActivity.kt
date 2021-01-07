@@ -1,15 +1,25 @@
 package com.yang.module_main.activity
 
+import android.media.MediaPlayer
 import android.net.Uri
 import android.text.TextUtils
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
+import com.shuyu.gsyvideoplayer.GSYVideoManager
+import com.shuyu.gsyvideoplayer.listener.VideoAllCallBack
+import com.shuyu.gsyvideoplayer.player.IjkPlayerManager
+import com.shuyu.gsyvideoplayer.utils.GSYVideoType
 import com.yang.common_lib.base.activity.BaseActivity
+import com.yang.common_lib.constant.Constant.SPLASH_VIDEO_PATH
 import com.yang.common_lib.constant.RoutePath.LOGIN_ACTIVITY
 import com.yang.common_lib.constant.RoutePath.MAIN_ACTIVITY
+import com.yang.common_lib.helper.VideoAllCallBackHelper
 import com.yang.common_lib.util.getRemoteComponent
 import com.yang.module_main.R
 import com.yang.module_main.di.component.DaggerMainComponent
@@ -17,6 +27,7 @@ import com.yang.module_main.di.module.MainModule
 import com.yang.module_main.factory.MainViewModelFactory
 import com.yang.module_main.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.act_login.*
+import tv.danmaku.ijk.media.player.IjkMediaPlayer
 import javax.inject.Inject
 
 
@@ -48,6 +59,7 @@ class LoginActivity : BaseActivity() {
 
         initVideoView()
 
+
         btn_login.setOnClickListener {
             checkForm()
         }
@@ -78,7 +90,6 @@ class LoginActivity : BaseActivity() {
             if (++i >= 1) {
                 return@Observer
             }
-            Log.i("TAG", "login: ===dnknflskn")
             ARouter.getInstance().build(MAIN_ACTIVITY).navigation()
             finish()
         })
@@ -98,28 +109,47 @@ class LoginActivity : BaseActivity() {
     }
 
 
-    private fun initVideoView(){
-        //loginVideoView.setVideoURI(Uri.parse("android.resource://$packageName/${R.raw.splash}"))
-        loginVideoView.setVideoPath("/data/user/0/com.yang.test/files/video/splash/splash.mp4")
-        //loginVideoView.setVideoPath(Uri.parse("\"android.resource://\" + packageName + \"/\" + R.raw.splash"))
-//        loginVideoView.setVideoPath("http://192.168.31.60:8080/files/splash.mp4")
-        loginVideoView.setOnPreparedListener {
-            it.setVolume(0f,0f)
-            it.start()
-        }
-        loginVideoView.setOnCompletionListener {
-            loginVideoView.start()
-        }
+    private fun initVideoView() {
+
+        //切换绘制模式
+        GSYVideoType.setRenderType(GSYVideoType.SUFRACE)
+        //ijk关闭log
+        IjkPlayerManager.setLogLevel(IjkMediaPlayer.IJK_LOG_SILENT)
+
+        //detailPlayer.setUp("http://192.168.31.60:8080/files/splash.mp4",true,null)
+
+        detailPlayer.setVideoAllCallBack(object : VideoAllCallBackHelper(){
+
+            override fun onPrepared(url: String?, vararg objects: Any?) {
+                super.onPrepared(url, *objects)
+                Log.i("TAG", "onPrepared: ")
+            }
+        })
+
+        detailPlayer.setUp(SPLASH_VIDEO_PATH,true,null)
+        detailPlayer.isLooping = true
+        detailPlayer.startPlayLogic()
     }
 
-    override fun onRestart() {
-        super.onRestart()
-        initVideoView()
+    override fun onPause() {
+        super.onPause()
+
+        GSYVideoManager.onPause()
+
+
     }
 
-    override fun onStop() {
-        super.onStop()
-        loginVideoView.stopPlayback()
+    override fun onResume() {
+        super.onResume()
+
+        GSYVideoManager.onResume()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        detailPlayer.release()
+        detailPlayer.setVideoAllCallBack(null)
+        GSYVideoManager.releaseAllVideos()
     }
 
 }

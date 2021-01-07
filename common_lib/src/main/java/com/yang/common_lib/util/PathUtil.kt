@@ -1,17 +1,16 @@
 package com.yang.common_lib.util
 
+import android.R.id
 import android.annotation.SuppressLint
 import android.content.ContentUris
 import android.content.Context
-import android.database.Cursor
 import android.net.Uri
-import android.os.Build
 import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
-import java.io.*
+import java.io.File
 
 
 /**
@@ -28,8 +27,27 @@ fun getPath(context: Context, uri: Uri): String {
     val documentId = DocumentsContract.getDocumentId(uri)
     val split = documentId.split(":")
     var path = ""
-    Log.i("getAPath", "$uri   $documentId")
+    Log.i("getAPath", "$uri   $documentId  ${uri.scheme}")
     when {
+
+        "file".equals(uri.scheme, true) -> {
+
+            path = uri.path.toString()
+
+        }
+
+        "content".equals(uri.scheme, true) -> {
+            if ("com.tencent.mtt.fileprovider" == uri.authority) {
+                val fileDir = Environment.getExternalStorageDirectory()
+                val file = File(fileDir, path.substring("/QQBrowser".length, uri.path?.length!!))
+                path = if (file.exists()) {
+                    file.toString()
+                } else {
+                    ""
+                }
+            }
+        }
+
         DocumentsContract.isDocumentUri(context, uri) -> {
             when (uri.authority) {
                 "com.android.externalstorage.documents" -> {
@@ -42,31 +60,22 @@ fun getPath(context: Context, uri: Uri): String {
                 }
                 "com.android.providers.downloads.documents" -> {
 
-                    //path = getFilePathFromURI(context, uri)
-                    //Log.i("assssssd", "aaaaaaaaaaa: $path")
+                    if (!TextUtils.isEmpty(documentId)) {
+                        path = if (documentId.startsWith("raw:")) {
+                            documentId.replaceFirst("raw:", "")
+                        } else {
+                            try {
+                                val contentUri = ContentUris.withAppendedId(
+                                    Uri.parse("content://downloads/public_downloads"),
+                                    documentId.toLong()
+                                )
+                                getDataColumn(context, contentUri, null, null)
+                            } catch (e: NumberFormatException) {
+                                ""
+                            }
+                        }
 
-//                        val arrayOf = arrayOf(
-//                            "content://downloads/my_downloads",
-//                            "content://downloads/all_downloads",
-//                            "content://downloads/public_downloads"
-//                        )
-//                        arrayOf.forEach {
-//                            val contentUri = ContentUris.withAppendedId(
-//                                Uri.parse(it),
-//                                documentId.toLong()
-//                            )
-//                            try {
-//                                val dataColumn = getDataColumn(context, contentUri, null, null)
-//                                if (dataColumn != "") {
-//                                    Log.i("sadssssss", "getAPath: $dataColumn")
-//                                    path = dataColumn
-//                                }
-//                            } catch (e: Exception) {
-//                                Log.i("Exception", ": ${e.message}")
-//                            }
-//
-//                        }
-
+                    }
 
                 }
                 "com.android.providers.media.documents" -> {
@@ -95,14 +104,12 @@ fun getPath(context: Context, uri: Uri): String {
                         }
                     }
                 }
+
             }
 
         }
-        "file".equals(uri.scheme, true) -> {
 
-            path = uri.path.toString()
 
-        }
         else -> {
             path = getDataColumn(context, uri, null, null)
         }
@@ -121,18 +128,20 @@ fun getDataColumn(
     selectionArgs: Array<String>?
 ): String {
     Log.i("getAPath", "getAPathuri: $uri")
-    val data = MediaStore.MediaColumns._ID
+    val data = MediaStore.Images.Media._ID
     val arrayOf = arrayOf(data)
     val contentResolver = context.contentResolver
     val query = contentResolver.query(uri, arrayOf, selection, selectionArgs, null)
-    Log.i("TAG", "getDataColumn: ${query?.moveToFirst() == null}")
-    if (query?.moveToFirst()!!) {
-        val columnIndexOrThrow = query.getColumnIndexOrThrow(data)
-        val path = columnIndexOrThrow.let { query.getString(it) }
-        query.close()
-        return path.toString()
+
+    val run = query?.run {
+        moveToFirst()
+        val columnIndexOrThrow = getColumnIndexOrThrow(data)
+        Log.i("TAG", "getDataColumn: $columnIndexOrThrow")
+        val path = getString(columnIndexOrThrow)
+        close()
+        path.toString()
     }
-    return ""
+    return run.toString()
 }
 
 

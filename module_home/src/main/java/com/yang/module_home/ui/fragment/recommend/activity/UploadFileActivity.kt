@@ -1,7 +1,10 @@
 package com.yang.module_home.ui.fragment.recommend.activity
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.provider.MediaStore
 import android.util.Log
 import android.util.TypedValue
 import androidx.lifecycle.ViewModelProvider
@@ -15,13 +18,12 @@ import com.google.android.material.shape.ShapeAppearanceModel
 import com.google.android.material.shape.ShapePathModel
 import com.google.android.material.shape.TriangleEdgeTreatment
 import com.google.android.material.snackbar.Snackbar
+import com.tbruyelle.rxpermissions2.RxPermissions
 import com.yang.common_lib.base.activity.BaseActivity
 import com.yang.common_lib.helper.ItemTouchHelperCallback
 import com.yang.common_lib.helper.MoveAndSwipedListener
 import com.yang.common_lib.interceptor.UrlInterceptor
-import com.yang.common_lib.util.clicks
-import com.yang.common_lib.util.getPath
-import com.yang.common_lib.util.getRemoteComponent
+import com.yang.common_lib.util.*
 import com.yang.common_lib.widget.MToolbarView
 import com.yang.module_home.R
 import com.yang.module_home.di.component.DaggerHomeComponent
@@ -61,6 +63,7 @@ class UploadFileActivity : BaseActivity() {
 
     companion object {
         const val FILE_CODE = 100
+        private const val TAG = "UploadFileActivity"
     }
 
     override fun getLayout(): Int {
@@ -69,8 +72,8 @@ class UploadFileActivity : BaseActivity() {
     }
 
     override fun initView() {
+        initPermission()
         fab_bottom_appbar.bitmapResource = R.drawable.img_delete
-
         clicks(fab_bottom_appbar).subscribe {
             val intent = Intent(Intent.ACTION_GET_CONTENT)
             intent.type = "*/*"
@@ -108,6 +111,30 @@ class UploadFileActivity : BaseActivity() {
             getRemoteComponent()
         ).build().inject(this)
         homeViewModel = ViewModelProvider(this, homeViewModelFactory).get(HomeViewModel::class.java)
+    }
+
+
+    @SuppressLint("CheckResult")
+    private fun initPermission() {
+        RxPermissions(this)
+            .requestEachCombined(
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
+            .subscribe { permission ->
+                when {
+                    permission.granted -> {
+
+                    }
+                    permission.shouldShowRequestPermissionRationale -> {
+                        showShort("请打开权限")
+                    }
+
+                    else -> {
+                        showShort("请打开权限")
+                    }
+                }
+            }
     }
 
 
@@ -172,16 +199,17 @@ class UploadFileActivity : BaseActivity() {
         if (requestCode == FILE_CODE && resultCode == Activity.RESULT_OK) {
 
             val uri = data.data
+
             try {
-                filePath = getPath(this, uri!!)
+                filePath = FileUtil.getPath(this, uri!!)
                 filePath?.let {
                     list.add(it)
                     mList.add(it)
                     adapter.notifyDataSetChanged()
                 }
-                Log.i("aaaaaaaaaaaa", "onActivityResult:$filePath  ${filePath==null}")
+                Log.i(TAG, "path:$filePath")
             } catch (e: Exception) {
-                Log.i("aaaaaaaaaaaa", "onActivityResult: ${e.message}")
+                Log.i(TAG, "Exception: ${e.message}")
             }
 
         }

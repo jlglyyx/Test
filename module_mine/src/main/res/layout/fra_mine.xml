@@ -1,141 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:orientation="vertical">
+    <com.yang.common_lib.widget.ElasticScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBarLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/white">
-
-            <com.yang.common_lib.widget.MToolbarView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:centerContent="我的"
-                app:isLeftImg="true"/>
-
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    app:layout_collapseMode="pin"
-                    android:layout_width="match_parent"
-                    android:minHeight="?attr/actionBarSize"
-                    app:title=""
-                    app:titleMargin="0dp"
-                    app:contentInsetStart="0dp"
-                    app:contentInsetLeft="0dp"
-                    app:titleTextColor="@android:color/white"
-                    android:layout_height="75dp">
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/rl_toolbar"
-
-                        android:background="@color/colorAccent"
-                        >
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:textColor="#000"
-                            android:textSize="16sp"
-                            android:id="@+id/tv_title"
-                            android:text="首页"/>
-                        <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="25dp"
-                            android:layout_alignTop="@+id/tv_title"
-                            android:layout_alignParentEnd="true"
-                            android:id="@+id/img_search" />
-                    </RelativeLayout>
-                </androidx.appcompat.widget.Toolbar>
-
-
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    app:layout_collapseMode="pin"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="180dp"
-                        android:id="@+id/ll_a"
-                        android:background="@color/colorAccent"
-                        android:orientation="vertical">
-
-                    </LinearLayout>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        app:cardCornerRadius="10dp"
-                        android:layout_marginHorizontal="20dp"
-                        android:layout_centerVertical="true"
-                        app:layout_collapseMode="parallax"
-                        android:layout_height="150dp">
-
-                        <com.google.android.material.imageview.ShapeableImageView
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:layout_alignParentBottom="true"
-                            android:layout_centerHorizontal="true"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_margin="30dp"
-                            android:scaleType="centerCrop"
-                            android:src="@mipmap/ic_launcher"
-                            app:layout_collapseMode="parallax"
-                            app:shapeAppearanceOverlay="@style/circleImageView" />
-
-
-                    </androidx.cardview.widget.CardView>
-
-                </RelativeLayout>
-
-
-
-
-
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-
-        </com.google.android.material.appbar.AppBarLayout>
-        <com.yang.common_lib.widget.ReboundScrollView android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true"
-            android:overScrollMode="never"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            >
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
+            android:background="@color/colorPrimary"
             android:orientation="vertical">
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:overScrollMode="never"/>
-        </LinearLayout>
-        </com.yang.common_lib.widget.ReboundScrollView>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+                android:tag="scroll"
+                android:overScrollMode="never" />
 
+        </LinearLayout>
+    </com.yang.common_lib.widget.ElasticScrollView>
 
 </LinearLayout>

@@ -21,6 +21,7 @@
                 app:contentScrim="@color/white"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 >
+
                 <LinearLayout
                     android:id="@+id/ll_video"
                     android:layout_width="match_parent"
@@ -35,6 +36,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="300dp" />
                 </LinearLayout>
+
                 <androidx.appcompat.widget.Toolbar
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -49,6 +51,8 @@
                         app:tabIndicatorHeight="0dp"
                         android:fitsSystemWindows="true" />
                 </androidx.appcompat.widget.Toolbar>
+
+
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 

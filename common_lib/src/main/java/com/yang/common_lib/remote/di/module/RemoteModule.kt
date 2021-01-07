@@ -101,7 +101,8 @@ class RemoteModule {
     }
 
     companion object {
-        const val baseUrl = "http://jlgl.free.idcfengye.com/"
+        const val baseUrl = "http://192.168.31.60:8080/"
+//        const val baseUrl = "http://jlgl.free.idcfengye.com/"
         private const val TAG = "RemoteModule"
         private const val TAG_LOG = "httpLog"
         private const val CONNECT_TIMEOUT: Long = 8000

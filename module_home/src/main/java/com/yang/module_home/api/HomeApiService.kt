@@ -10,7 +10,7 @@ import retrofit2.http.POST
 import retrofit2.http.PartMap
 
 interface HomeApiService: BaseApiService {
-    @GET("/test/json/main.json")
+    @GET("/json/main.json")
     fun getRecommendList():Observable<MResult<MutableList<RecommendTypeBean>>>
 
 

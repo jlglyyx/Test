@@ -6,11 +6,14 @@ import android.app.NotificationManager.IMPORTANCE_HIGH
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.os.Binder
-import android.os.Build
-import android.os.Environment
-import android.os.IBinder
+import android.os.*
+import android.util.Log
+import androidx.lifecycle.Observer
+import com.yang.common_lib.base.viewmodel.BaseViewModel
+import com.yang.common_lib.constant.Constant
 import com.yang.common_lib.down.DownLoadTask
+import com.yang.common_lib.down.thread.MultiMoreThreadDownload
+import com.yang.common_lib.interceptor.UrlInterceptor
 import java.io.File
 
 
@@ -24,6 +27,10 @@ import java.io.File
  * @Date 2020/12/24 17:53
  */
 class DownLoadService : Service() {
+
+    companion object{
+        private const val TAG = "DownLoadService"
+    }
 
 
     override fun onBind(intent: Intent?): IBinder {
@@ -56,7 +63,6 @@ class DownLoadService : Service() {
             private var haveNotification:Boolean
             private var urlType:String
             private var threadCount:Int
-
 
 
             init {
@@ -129,6 +135,20 @@ class DownLoadService : Service() {
         }
 
 
+        interface SplashVideo{
+            fun splashVideo()
+        }
+
+        var splashVideo:SplashVideo? = null
+
+
+        fun splashVideo(){
+
+            splashVideo?.splashVideo()
+        }
+
+
+
     }
 
     override fun onCreate() {
@@ -153,5 +173,14 @@ class DownLoadService : Service() {
         return getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     }
 
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Log.i(TAG, "onStartCommand: 连接成功")
+        return super.onStartCommand(intent, flags, startId)
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i(TAG, "onDestroy: 销毁")
+    }
 }

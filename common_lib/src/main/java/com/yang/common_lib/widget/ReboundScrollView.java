@@ -181,14 +181,18 @@ public class ReboundScrollView extends ScrollView {
      * 判断是否滚动到顶部
      */
     private boolean isCanPullDown() {
+        Log.i(TAG, "isCanPullDown: "+getScrollY()  +"   "+ contentView.getHeight()  +"   "+getHeight());
         return getScrollY() == 0 ||
                 contentView.getHeight() < getHeight() + getScrollY();
+
+
     }
 
     /**
      * 判断是否滚动到底部
      */
     private boolean isCanPullUp() {
+        Log.i(TAG, "isCanPullUp: "+getScrollY()  +"   "+ contentView.getHeight()  +"   "+getHeight());
         return  contentView.getHeight() <= getHeight() + getScrollY();
     }
 
