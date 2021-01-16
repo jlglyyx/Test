@@ -27,6 +27,7 @@ object RoutePath {
     const val MAIN_ACTIVITY = "/$MODULE_MAIN/$ACTIVITY/MainActivity"
     const val LOGIN_ACTIVITY = "/$MODULE_MAIN/$ACTIVITY/LoginActivity"
     const val SPLASH_ACTIVITY = "/$MODULE_MAIN/$ACTIVITY/SplashActivity"
+    const val REGISTER_ACTIVITY = "/$MODULE_MAIN/$ACTIVITY/RegisterActivity"
 
     //main fragment
 

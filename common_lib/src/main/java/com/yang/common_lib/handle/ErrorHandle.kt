@@ -1,8 +1,11 @@
 package com.yang.common_lib.handle
 
+import android.util.Log
 import com.google.gson.JsonSyntaxException
-import com.yang.common_lib.R
 import com.yang.common_lib.util.showShort
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
@@ -19,35 +22,42 @@ import java.net.UnknownHostException
  */
 class ErrorHandle(private val t: Throwable) {
 
+    companion object{
+        private const val TAG = "ErrorHandle"
+    }
 
     fun handle(): String {
         return when (t) {
             is HttpException -> {
                 return when (t.code()) {
-                    HttpExceptionCode.NO_FIND.code -> {
-                        HttpExceptionCode.NO_FIND.message
+                    IHttpException.HttpException.NO_FIND.code -> {
+
+                        IHttpException.HttpException.NO_FIND.message
                     }
                     else -> {
-                        "网络异常,稍后重试"
+
+                        IHttpException.OtherException.NETWORK_ERROR.message
                     }
                 }
             }
             is UnknownHostException -> {
-                "网络未连接"
+
+                IHttpException.OtherException.NO_NETWORK_ERROR.message
             }
             is SocketTimeoutException -> {
-                "连接超时,稍后重试"
+
+                IHttpException.OtherException.NETWORK_ERROR.message
             }
             is JsonSyntaxException -> {
-                showShort("Json解析异常")
-                "Json解析异常"
+
+                IHttpException.OtherException.JSON_SYNTAX_ERROR.message
             }
             else -> {
-                t.message.toString()
+                Log.i(TAG, "handle: ${t.message.toString()}")
+                IHttpException.OtherException.UN_KNOWN_ERROR.message
+
             }
         }
-
-
     }
 
 

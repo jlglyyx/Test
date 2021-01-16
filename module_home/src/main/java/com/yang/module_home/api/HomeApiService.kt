@@ -17,5 +17,5 @@ interface HomeApiService: BaseApiService {
 
     @Multipart
     @POST("/uploadFile")
-    fun uploadFile(@PartMap files:MutableMap<String,RequestBody>):Observable<MResult<String>>
+    fun uploadFile(@PartMap files:MutableMap<String,RequestBody>):Observable<MResult<Any>>
 }

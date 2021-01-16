@@ -10,6 +10,7 @@ import com.tencent.bugly.proguard.s
 import com.yang.common_lib.base.viewmodel.BaseViewModel
 import com.yang.common_lib.dialog.RemoteMessageDialog
 import com.yang.common_lib.handle.ErrorHandle
+import com.yang.common_lib.remote.di.response.MResult
 import com.yang.common_lib.util.io_main
 import com.yang.common_lib.util.remoteMessageDialog
 import com.yang.module_main.data.UserBean
@@ -39,13 +40,14 @@ class MainViewModel @Inject constructor(
 
     private var userInfo = MutableLiveData<UserBean>()
     private var videoBean = MutableLiveData<VideoBean>()
-    fun login(): MutableLiveData<UserBean> {
+    private var register = MutableLiveData<MResult<UserBean>>()
+    fun login(userName:String,password:String): MutableLiveData<UserBean> {
         val remoteMessageDialog = RemoteMessageDialog(mContext, "登录中")
         viewModelScope.launch {
             remoteMessageDialog.show()
             val async = viewModelScope.async(Dispatchers.IO) {
                 try {
-                    mainRepository.login().run {
+                    mainRepository.login(userName,password).run {
                         if (this.success) {
                             userInfo.postValue(this.data)
                             "请求成功"
@@ -64,6 +66,32 @@ class MainViewModel @Inject constructor(
             remoteMessageDialog.dismiss()
         }
         return userInfo
+    }
+    fun register(userBean: UserBean): MutableLiveData<MResult<UserBean>> {
+        val remoteMessageDialog = RemoteMessageDialog(mContext, "登录中")
+        viewModelScope.launch {
+            remoteMessageDialog.show()
+            val async = viewModelScope.async(Dispatchers.IO) {
+                try {
+                    mainRepository.register(userBean).run {
+                        register.postValue(this)
+                        if (this.success) {
+                            "请求成功"
+                        }else{
+                            this.message
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.i(TAG, "login: $e")
+                    ErrorHandle(e).handle()
+                    "登录失败"
+                }
+            }
+            remoteMessageDialog.content = async.await()
+            delay(500)
+            remoteMessageDialog.dismiss()
+        }
+        return register
     }
     fun splashVideo(): MutableLiveData<VideoBean> {
         viewModelScope.launch {

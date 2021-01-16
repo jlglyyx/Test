@@ -96,7 +96,7 @@ class UploadFileActivity : BaseActivity() {
                     val create = RequestBody.create(MediaType.parse("multipart/form-data"), file)
                     mutableMapOf["file\";filename=\"$encode"] = create
                 }
-                UrlInterceptor.url = "http://192.168.31.60:8080/"
+                UrlInterceptor.url = "http://192.168.31.61:20001/"
                 homeViewModel.uploadFile(mutableMapOf)
 
             }

@@ -29,7 +29,7 @@ class HomeRepository @Inject constructor(private val homeApiService: HomeApiServ
     }
 
 
-    fun uploadFile(files:MutableMap<String, RequestBody>) : Observable<String>{
+    fun uploadFile(files:MutableMap<String, RequestBody>) : Observable<Any>{
         return homeApiService.uploadFile(files).map {
             if (!it.success){
                 throw Exception(it.message)

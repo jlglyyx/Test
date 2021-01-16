@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
+import com.bumptech.glide.Glide
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.listener.VideoAllCallBack
 import com.shuyu.gsyvideoplayer.player.IjkPlayerManager
@@ -19,6 +20,7 @@ import com.yang.common_lib.base.activity.BaseActivity
 import com.yang.common_lib.constant.Constant.SPLASH_VIDEO_PATH
 import com.yang.common_lib.constant.RoutePath.LOGIN_ACTIVITY
 import com.yang.common_lib.constant.RoutePath.MAIN_ACTIVITY
+import com.yang.common_lib.constant.RoutePath.REGISTER_ACTIVITY
 import com.yang.common_lib.helper.VideoAllCallBackHelper
 import com.yang.common_lib.util.getRemoteComponent
 import com.yang.module_main.R
@@ -67,6 +69,9 @@ class LoginActivity : BaseActivity() {
             ARouter.getInstance().build(MAIN_ACTIVITY).navigation()
             finish()
         }
+        tv_register.setOnClickListener {
+            ARouter.getInstance().build(REGISTER_ACTIVITY).navigation()
+        }
     }
 
     override fun initViewModel() {
@@ -77,16 +82,8 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun login() {
+        mainViewModel.login(tv_user_name.text.toString(), tv_password.text.toString()).observe(this, Observer {
 
-        mainViewModel.login().observe(this, Observer {
-            if (!TextUtils.equals(tv_user_name.text, it.userName)) {
-                input_user_name.error = "账号不匹配"
-                return@Observer
-            }
-            if (!TextUtils.equals(tv_password.text, it.password)) {
-                input_password.error = "密码不匹配"
-                return@Observer
-            }
             if (++i >= 1) {
                 return@Observer
             }
@@ -123,6 +120,15 @@ class LoginActivity : BaseActivity() {
             override fun onPrepared(url: String?, vararg objects: Any?) {
                 super.onPrepared(url, *objects)
                 Log.i("TAG", "onPrepared: ")
+                img_error.visibility = View.GONE
+            }
+
+            override fun onPlayError(url: String?, vararg objects: Any?) {
+                super.onPlayError(url, *objects)
+                Log.i("TAG", "onPlayError: ")
+                Glide.with(this@LoginActivity).load("https://img.ivsky.com/img/tupian/pre/202006/20/jiangbing-006.jpg").into(img_error)
+                detailPlayer.release()
+                detailPlayer.setVideoAllCallBack(null)
             }
         })
 

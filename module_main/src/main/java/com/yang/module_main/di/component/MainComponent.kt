@@ -4,6 +4,7 @@ import com.yang.common_lib.remote.di.component.RemoteComponent
 import com.yang.common_lib.scope.FragmentScope
 import com.yang.module_main.activity.LoginActivity
 import com.yang.module_main.activity.MainActivity
+import com.yang.module_main.activity.RegisterActivity
 import com.yang.module_main.activity.SplashActivity
 import com.yang.module_main.di.module.MainModule
 import dagger.Component
@@ -24,5 +25,6 @@ interface MainComponent {
     fun inject(loginActivity: LoginActivity)
     fun inject(mainActivity: MainActivity)
     fun inject(splashActivity: SplashActivity)
+    fun inject(registerActivity: RegisterActivity)
 
 }

@@ -155,7 +155,7 @@ class HomeViewModel @Inject constructor(
     fun uploadFile(files:MutableMap<String, RequestBody>) : String {
         var message = ""
         homeRepository.uploadFile(files).compose(io_main(mContext,"上传中。。。","上传成功")).subscribe({
-            message = it
+            message = it.toString()
         },{
             message = it.message.toString()
         })
