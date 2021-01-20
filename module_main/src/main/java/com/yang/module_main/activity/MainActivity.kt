@@ -1,9 +1,6 @@
 package com.yang.module_main.activity
 
-import android.app.Activity
-import android.util.DisplayMetrics
 import androidx.core.view.GravityCompat
-import androidx.customview.widget.ViewDragHelper
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
@@ -19,7 +16,6 @@ import com.yang.common_lib.util.showShort
 import com.yang.module_main.R
 import com.yang.module_main.fragment.LeftMenuFragment
 import kotlinx.android.synthetic.main.activity_main.*
-import java.lang.reflect.Field
 
 @Route(path = MAIN_ACTIVITY)
 class MainActivity : BaseActivity() {
@@ -40,23 +36,24 @@ class MainActivity : BaseActivity() {
         titles = mutableListOf()
         imgSelect = mutableListOf()
         imgUnSelect = mutableListOf()
+
         fragments.add(ARouter.getInstance().build(RoutePath.HOME_FRAGMENT).navigation() as Fragment)
-        fragments.add(ARouter.getInstance().build(RoutePath.MINE_FRAGMENT).navigation() as Fragment)
-        fragments.add(ARouter.getInstance().build(RoutePath.MINE_FRAGMENT).navigation() as Fragment)
+        fragments.add(ARouter.getInstance().build(RoutePath.VIDEO_FRAGMENT).navigation() as Fragment)
+        fragments.add(ARouter.getInstance().build(RoutePath.PICTURE_FRAGMENT).navigation() as Fragment)
         fragments.add(ARouter.getInstance().build(RoutePath.MINE_FRAGMENT).navigation() as Fragment)
         titles.add("首页")
         titles.add("视频")
-        titles.add("更多")
+        titles.add("图片")
         titles.add("我的")
 
         imgSelect.add(R.drawable.img_home_select)
-        imgSelect.add(R.drawable.img_mine_select)
-        imgSelect.add(R.drawable.img_home_select)
+        imgSelect.add(R.drawable.img_video_select)
+        imgSelect.add(R.drawable.img_picture_select)
         imgSelect.add(R.drawable.img_mine_select)
 
         imgUnSelect.add(R.drawable.img_home_unselect)
-        imgUnSelect.add(R.drawable.img_mine_unselect)
-        imgUnSelect.add(R.drawable.img_home_unselect)
+        imgUnSelect.add(R.drawable.img_video_unselect)
+        imgUnSelect.add(R.drawable.img_picture_unselect)
         imgUnSelect.add(R.drawable.img_mine_unselect)
 
         initViewPager()

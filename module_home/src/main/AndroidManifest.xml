@@ -10,11 +10,8 @@
         android:supportsRtl="true"
         android:name="com.yang.common_lib.base.app.BaseApplication"
         android:theme="@style/AppTheme">
-        <activity android:name="com.yang.module_home.ui.fragment.recommend.activity.VideoPlayActivity" android:configChanges="orientation|keyboardHidden|screenSize" android:windowSoftInputMode="adjustPan"/>
-        <activity android:name="com.yang.module_home.ui.fragment.recommend.activity.SearchActivity"/>
 <!--        <activity android:name="com.yang.module_home.ui.fragment.recommend.activity.SearchActivity" android:theme="@style/AppTheme.MD"/>-->
 
-        <activity android:name=".ui.fragment.recommend.activity.UploadFileActivity" android:theme="@style/AppTheme.MD"/>
     </application>
 
 </manifest>

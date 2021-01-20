@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.yang.common_lib.util.getStatusBarHeight
 
 
@@ -36,11 +38,21 @@ abstract class BaseFragment : Fragment() {
         return mView
     }
 
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initViewModel()
         initView()
+    }
+
+
+    fun <T: ViewModel> getViewModel(factory: ViewModelProvider.Factory, viewModel: Class<T>): T {
+
+        return ViewModelProvider(this, factory).get(viewModel)
+    }
+
+    fun <T: ViewModel> getViewModel(viewModel: Class<T>): T {
+
+        return ViewModelProvider(this).get(viewModel)
     }
 
 

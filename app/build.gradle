@@ -57,6 +57,8 @@ dependencies {
         implementation project(path:':module_main')
         implementation project(path:':module_mine')
         implementation project(path:':module_home')
+        implementation project(path:':module_video')
+        implementation project(path:':module_picture')
     }
 
 

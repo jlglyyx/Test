@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.yang.common_lib.util.getStatusBarHeight
 
 
@@ -20,7 +22,7 @@ import com.yang.common_lib.util.getStatusBarHeight
  */
 abstract class BaseLazyFragment : Fragment() {
 
-    private var mView:View? = null
+    private var mView: View? = null
     private var isFirstLoad = true
 
     override fun onCreateView(
@@ -28,10 +30,10 @@ abstract class BaseLazyFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        if (mView == null){
+        if (mView == null) {
             mView = inflater.inflate(getLayout(), container, false)
-            if (setStatusPadding()){
-                mView?.setPadding(0, getStatusBarHeight(requireActivity()),0,0)
+            if (setStatusPadding()) {
+                mView?.setPadding(0, getStatusBarHeight(requireActivity()), 0, 0)
             }
         }
         return mView
@@ -53,6 +55,18 @@ abstract class BaseLazyFragment : Fragment() {
     open fun setStatusPadding(): Boolean {
         return false
     }
+
+
+    fun <T:ViewModel> getViewModel(factory: ViewModelProvider.Factory, viewModel: Class<T>): T {
+
+        return ViewModelProvider(this, factory).get(viewModel)
+    }
+
+    fun <T:ViewModel> getViewModel(viewModel: Class<T>): T {
+
+        return ViewModelProvider(this).get(viewModel)
+    }
+
 
     override fun onResume() {
         super.onResume()
@@ -98,7 +112,7 @@ abstract class BaseLazyFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        if (mView!=null){
+        if (mView != null) {
             (mView?.parent as ViewGroup).removeView(mView)
         }
     }

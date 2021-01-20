@@ -7,14 +7,10 @@ import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnClickListener
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.core.view.marginTop
 import com.yang.common_lib.R
-import com.yang.common_lib.util.getStatusBarHeight
 
 
 /**
@@ -82,7 +78,7 @@ class MToolbarView :RelativeLayout {
         rightImg.setImageResource(
             typedArray.getResourceId(
                 R.styleable.HeadToolbarView_rightImg,
-                R.drawable.img_forword
+                R.drawable.img_forward
             )
         )
         val aBoolean =

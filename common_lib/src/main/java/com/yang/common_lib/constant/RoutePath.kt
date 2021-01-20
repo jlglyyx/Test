@@ -21,6 +21,8 @@ object RoutePath {
     private const val MODULE_MAIN = "module_main"
     private const val MODULE_HOME = "module_home"
     private const val MODULE_MINE = "module_mine"
+    private const val MODULE_VIDEO = "module_video"
+    private const val MODULE_PICTURE = "module_picture"
 
 
     //main activity
@@ -37,8 +39,20 @@ object RoutePath {
     const val HOME_RECOMMEND_FRAGMENT = "/$MODULE_HOME/$FRAGMENT/RecommendFragment"
 
     //home activity
-    const val HOME_VIDEOPLAY_ACTIVITY = "/$MODULE_HOME/$ACTIVITY/VideoPlayActivity"
-    const val HOME_SEARCH_ACTIVITY = "/$MODULE_HOME/$ACTIVITY/SearchActivity"
+
+    //picture fragment
+    const val PICTURE_FRAGMENT = "/$MODULE_PICTURE/$FRAGMENT/HomeFragment"
+    const val PICTURE_RECOMMEND_FRAGMENT = "/$MODULE_PICTURE/$FRAGMENT/RecommendFragment"
+
+    //picture activity
+
+    //video fragment
+    const val VIDEO_FRAGMENT = "/$MODULE_VIDEO/$FRAGMENT/VideoFragment"
+    const val VIDEO_RECOMMEND_FRAGMENT = "/$MODULE_VIDEO/$FRAGMENT/RecommendFragment"
+
+    //home activity
+    const val VIDEO_VIDEO_PLAY_ACTIVITY = "/$MODULE_VIDEO/$ACTIVITY/VideoPlayActivity"
+    const val VIDEO_SEARCH_ACTIVITY = "/$MODULE_VIDEO/$ACTIVITY/SearchActivity"
 
     const val MINE_FRAGMENT = "/$MODULE_MINE/$FRAGMENT/MineFragment"
 

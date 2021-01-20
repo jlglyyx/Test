@@ -2,10 +2,6 @@ package com.yang.common_lib.handle
 
 import android.util.Log
 import com.google.gson.JsonSyntaxException
-import com.yang.common_lib.util.showShort
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException

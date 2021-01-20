@@ -82,7 +82,7 @@ class SplashActivity : BaseActivity() {
     }
 
     override fun initView() {
-        initDownLoadService()
+       // initDownLoadService()
         val launch = GlobalScope.launch(Dispatchers.Main) {
             repeat(SPLASH_TIME + 1) {
                 tv_timer.text = "跳过${SPLASH_TIME--}秒"

@@ -5,6 +5,8 @@ import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import javax.inject.Inject
 
 abstract class BaseActivity: AppCompatActivity() {
@@ -30,5 +32,15 @@ abstract class BaseActivity: AppCompatActivity() {
     abstract fun initView()
     abstract fun initViewModel()
 
+
+    fun <T: ViewModel> getViewModel(factory: ViewModelProvider.Factory, viewModel: Class<T>): T {
+
+        return ViewModelProvider(this, factory).get(viewModel)
+    }
+
+    fun <T: ViewModel> getViewModel(viewModel: Class<T>): T {
+
+        return ViewModelProvider(this).get(viewModel)
+    }
 
 }

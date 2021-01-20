@@ -1,22 +1,21 @@
 package com.yang.module_mine.fragment
 
-import android.content.ComponentName
-import android.content.Context.BIND_AUTO_CREATE
-import android.content.Intent
-import android.content.ServiceConnection
-import android.graphics.drawable.Drawable
-import android.os.IBinder
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
-import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.yang.common_lib.base.fragment.BaseFragment
 import com.yang.common_lib.constant.RoutePath.MINE_FRAGMENT
-import com.yang.common_lib.down.DownLoadService
+import com.yang.common_lib.util.getRemoteComponent
 import com.yang.module_mine.R
+import com.yang.module_mine.data.MineItemBean
+import com.yang.module_mine.di.component.DaggerMineComponent
+import com.yang.module_mine.di.module.MineModule
+import com.yang.module_mine.factory.MineViewModelFactory
+import com.yang.module_mine.viewmodel.MineViewModel
 import kotlinx.android.synthetic.main.fra_mine.*
+import javax.inject.Inject
 
 
 /**
@@ -31,11 +30,12 @@ import kotlinx.android.synthetic.main.fra_mine.*
 @Route(path = MINE_FRAGMENT)
 class MineFragment : BaseFragment() {
 
-    var list = mutableListOf<String>()
-    lateinit var mineFragmentAdapter:MineFragmentAdapter
+    @Inject
+    lateinit var mineViewModelFactory: MineViewModelFactory
 
-    private lateinit var serviceConnection: ServiceConnection
-    private lateinit var downLoadService : DownLoadService.DownloadBinder
+    lateinit var mineViewModel: MineViewModel
+
+    private lateinit var mineFragmentAdapter:MineFragmentAdapter
 
 
     override fun getLayout(): Int {
@@ -45,70 +45,52 @@ class MineFragment : BaseFragment() {
 
     override fun initView() {
 
-        initServiceConnection()
-
-        for (i in 0..100){
-            list.add("$i")
-        }
-
         recyclerView.layoutManager = object : LinearLayoutManager(requireContext()){
             override fun canScrollVertically(): Boolean {
                 return true
             }
         }
-        mineFragmentAdapter = MineFragmentAdapter(R.layout.item_menu, list)
+        mineFragmentAdapter = MineFragmentAdapter(mineViewModel.itemList.value?: mutableListOf())
         recyclerView.adapter = mineFragmentAdapter
-        val value = object : CustomTarget<Drawable>(){
-            override fun onLoadCleared(placeholder: Drawable?) {
-            }
-
-            override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
-
-            }
-
-
-        }
 
         mineFragmentAdapter.setOnItemClickListener { adapter, view, position ->
 
-//            downLoadService.newBuilder()
-//                .url("https://dl.softmgr.qq.com/original/net_app/QQPhoneManager_990420.5239.exe")
-//                .suffix("exe")
-//                .childMkdirPath("exe")
-//                .build()
-        }
-
-        //Glide.with(this).load("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1607509937585&di=97b9e651110aea14947abc0a9fcf1bc8&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F07448b820b27cd7394c0836161e8e76f95d016da27e8a-LtXDaF_fw658").into(value)
-        //Glide.with(this).load("https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2400147585,2493813740&fm=26&gp=0.jpg0").into(siv_head)
-    }
-
-
-    private fun initServiceConnection(){
-
-        serviceConnection = object : ServiceConnection{
-            override fun onServiceDisconnected(name: ComponentName) {
-            }
-
-            override fun onServiceConnected(name: ComponentName, service: IBinder) {
-                downLoadService = service as DownLoadService.DownloadBinder
-            }
 
         }
 
-        activity?.bindService(Intent(requireActivity(),
-            DownLoadService::class.java),serviceConnection,BIND_AUTO_CREATE)
     }
+
+
 
     override fun initViewModel() {
 
+        DaggerMineComponent.builder().mineModule(MineModule(requireActivity())).remoteComponent(getRemoteComponent()).build().inject(this)
 
+        mineViewModel = ViewModelProvider(this,mineViewModelFactory).get(MineViewModel::class.java)
     }
 
 
-    inner class MineFragmentAdapter(layoutResId: Int, data: MutableList<String>?) : BaseQuickAdapter<String, BaseViewHolder>(layoutResId, data) {
+    inner class MineFragmentAdapter(data: MutableList<MineItemBean>) : BaseMultiItemQuickAdapter<MineItemBean, BaseViewHolder>(data) {
 
 
-        override fun convert(holder: BaseViewHolder, item: String) {
+        init {
+            addItemType(MineItemBean.TYPE_A,R.layout.item_menu)
+            addItemType(MineItemBean.TYPE_B,R.layout.item_head)
+        }
+
+        override fun convert(holder: BaseViewHolder, item: MineItemBean) {
+
+            when(item.itemType){
+                MineItemBean.TYPE_A ->{
+                    holder.setText(R.id.tv_content,item.content)
+                }
+                MineItemBean.TYPE_B ->{
+
+                }
+                MineItemBean.TYPE_C ->{
+
+                }
+            }
 
 
         }

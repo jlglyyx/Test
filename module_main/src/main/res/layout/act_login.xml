@@ -7,7 +7,8 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <com.yang.common_lib.widget.EmptyControlVideo
             android:id="@+id/detailPlayer"
@@ -88,14 +89,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:layout_alignParentStart="true"
                 android:paddingVertical="@dimen/dp_8"
                 android:id="@+id/tv_register"
                 android:text="没有账号？立即注册"/>
             <TextView
                 android:layout_width="wrap_content"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:layout_height="wrap_content"
                 android:paddingVertical="@dimen/dp_8"
                 android:layout_alignParentEnd="true"
@@ -123,7 +124,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:padding="@dimen/dp_8"
-            android:src="@drawable/img_forword" />
+            android:src="@drawable/img_forward" />
     </LinearLayout>
 
 </RelativeLayout>

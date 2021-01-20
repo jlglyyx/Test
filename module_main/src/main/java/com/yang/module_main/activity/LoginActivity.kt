@@ -59,7 +59,7 @@ class LoginActivity : BaseActivity() {
 
     override fun initView() {
 
-        initVideoView()
+        //initVideoView()
 
 
         btn_login.setOnClickListener {
@@ -153,8 +153,8 @@ class LoginActivity : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        detailPlayer.release()
-        detailPlayer.setVideoAllCallBack(null)
+//        detailPlayer.release()
+//        detailPlayer.setVideoAllCallBack(null)
         GSYVideoManager.releaseAllVideos()
     }
 
