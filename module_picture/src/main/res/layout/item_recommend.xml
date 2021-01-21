@@ -1,13 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="@dimen/dp_6"
+    app:cardCornerRadius="@dimen/dp_10">
 
-    <ImageView
-        android:id="@+id/img_item"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/img_launcher"/>
+        android:orientation="vertical"
+        android:layout_margin="@dimen/dp_5">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/siv_item"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
+            android:padding="@dimen/dp_1"
+            app:shapeAppearanceOverlay="@style/topLeft_topRight_CircleImageView"
+            android:src="@drawable/img_launcher"/>
 
-</LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="卡卡打开的流口水的卡看看口令卡的开始看大盘"
+            android:textSize="@dimen/sp_12"
+            android:layout_marginTop="@dimen/dp_5"
+            android:textColor="@color/black"/>
+
+    </LinearLayout>
+
+
+
+</androidx.cardview.widget.CardView>

@@ -71,14 +71,14 @@ class MainActivity : BaseActivity() {
 
         for (i in imgSelect.indices) {
             if (i == 0) {
-                tabLayout.getTabAt(i)?.setIcon(imgSelect[i])
+                mainTabLayout.getTabAt(i)?.setIcon(imgSelect[i])
             } else {
-                tabLayout.getTabAt(i)?.setIcon(imgUnSelect[i])
+                mainTabLayout.getTabAt(i)?.setIcon(imgUnSelect[i])
             }
 
         }
 
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+        mainTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
 
@@ -103,7 +103,7 @@ class MainActivity : BaseActivity() {
         )
         viewPager.offscreenPageLimit = fragments.size - 1
 
-        tabLayout.setupWithViewPager(viewPager)
+        mainTabLayout.setupWithViewPager(viewPager)
 
 
 

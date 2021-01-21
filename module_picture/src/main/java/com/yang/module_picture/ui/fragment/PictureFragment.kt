@@ -1,5 +1,6 @@
 package com.yang.module_picture.ui.fragment
 
+import android.annotation.SuppressLint
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
@@ -12,6 +13,7 @@ import com.yang.common_lib.constant.RoutePath
 import com.yang.common_lib.constant.RoutePath.HOME_RECOMMEND_FRAGMENT
 import com.yang.module_picture.R
 import kotlinx.android.synthetic.main.fra_picture.*
+import kotlinx.android.synthetic.main.view_public_normal_head_search.*
 import kotlin.math.abs
 
 
@@ -70,38 +72,19 @@ class PictureFragment : BaseFragment() {
 
 
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun initTabLayout() {
 
-        var isOpenFirst = true
-        var isCloseFirst = true
+        toolbar.setOnTouchListener { v, event ->
+            return@setOnTouchListener ll_seek.dispatchTouchEvent(event)
+        }
 
-        appBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-            when {
-                verticalOffset == 0 -> {
-                    if (isOpenFirst){
-                        //ll_search.visibility = View.VISIBLE
-                        isOpenFirst = false
-                        isCloseFirst = true
-                    }
+        ll_search.setOnClickListener {
 
+        }
+        img_add.setOnClickListener {
 
-                }
-                abs(verticalOffset) >=appBarLayout.totalScrollRange -> {
-                    if (isCloseFirst){
-                        //ll_search.visibility = View.INVISIBLE
-                        isCloseFirst = false
-                        isOpenFirst = true
-                    }
-
-
-                }
-                else -> {
-
-
-
-                }
-            }
-        })
+        }
 
 
     }

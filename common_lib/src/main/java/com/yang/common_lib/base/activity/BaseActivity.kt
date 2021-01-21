@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.alibaba.android.arouter.launcher.ARouter
 import javax.inject.Inject
 
 abstract class BaseActivity: AppCompatActivity() {
@@ -21,6 +22,7 @@ abstract class BaseActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(getLayout())
         mContext = this
+        ARouter.getInstance().inject(this)
         initViewModel()
         initView()
         //先强制竖屏吧 屏幕切换保活数据太难处理了

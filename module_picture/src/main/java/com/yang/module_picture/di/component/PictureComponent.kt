@@ -3,8 +3,9 @@ package com.yang.module_picture.di.component
 import com.yang.common_lib.remote.di.component.RemoteComponent
 import com.yang.common_lib.scope.FragmentScope
 import com.yang.module_picture.di.module.PictureModule
+import com.yang.module_picture.ui.activity.PictureDescActivity
 import com.yang.module_picture.ui.fragment.PictureFragment
-import com.yang.module_picture.ui.fragment.RecommendFragment
+import com.yang.module_picture.ui.fragment.PictureRecommendFragment
 import dagger.Component
 
 
@@ -22,6 +23,7 @@ import dagger.Component
 interface PictureComponent {
 
     fun inject(pictureFragment: PictureFragment)
-    fun inject(recommendFragment: RecommendFragment)
+    fun inject(pictureRecommendFragment: PictureRecommendFragment)
+    fun inject(pictureDescActivity: PictureDescActivity)
 
 }

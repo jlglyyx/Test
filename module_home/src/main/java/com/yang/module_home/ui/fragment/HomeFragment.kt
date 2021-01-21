@@ -1,5 +1,6 @@
 package com.yang.module_home.ui.fragment
 
+import android.annotation.SuppressLint
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
@@ -12,6 +13,7 @@ import com.yang.common_lib.constant.RoutePath
 import com.yang.common_lib.constant.RoutePath.HOME_RECOMMEND_FRAGMENT
 import com.yang.module_home.R
 import kotlinx.android.synthetic.main.fra_home.*
+import kotlinx.android.synthetic.main.view_public_normal_head_search.*
 import kotlin.math.abs
 
 
@@ -70,9 +72,18 @@ class HomeFragment : BaseFragment() {
 
 
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun initTabLayout() {
+        toolbar.setOnTouchListener { v, event ->
+            return@setOnTouchListener ll_seek.dispatchTouchEvent(event)
+        }
 
+        ll_search.setOnClickListener {
 
+        }
+        img_add.setOnClickListener {
+
+        }
 
     }
 

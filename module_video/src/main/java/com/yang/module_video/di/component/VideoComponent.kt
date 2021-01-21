@@ -4,7 +4,7 @@ import com.yang.common_lib.remote.di.component.RemoteComponent
 import com.yang.common_lib.scope.FragmentScope
 import com.yang.module_video.di.module.VideoModule
 import com.yang.module_video.ui.fragment.VideoFragment
-import com.yang.module_video.ui.fragment.recommend.RecommendFragment
+import com.yang.module_video.ui.fragment.recommend.VideoRecommendFragment
 import com.yang.module_video.ui.fragment.recommend.activity.UploadFileActivity
 import com.yang.module_video.ui.fragment.recommend.activity.VideoPlayActivity
 import dagger.Component
@@ -24,7 +24,7 @@ import dagger.Component
 interface VideoComponent {
 
     fun inject(videoFragment: VideoFragment)
-    fun inject(recommendFragment: RecommendFragment)
+    fun inject(videoRecommendFragment: VideoRecommendFragment)
     fun inject(videoPlayActivity: VideoPlayActivity)
     fun inject(uploadFileActivity: UploadFileActivity)
 

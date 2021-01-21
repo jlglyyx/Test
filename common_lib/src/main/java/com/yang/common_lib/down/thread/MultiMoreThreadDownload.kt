@@ -1,6 +1,10 @@
 package com.yang.common_lib.down.thread
 
 import android.util.Log
+import com.yang.common_lib.util.showShort
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.RandomAccessFile
 import java.net.HttpURLConnection
@@ -120,13 +124,18 @@ class MultiMoreThreadDownload(var filePath: String, var fileUrl: String) : Threa
                         currentPercent = downloadPercent
                     }
 
+                }
 
+                GlobalScope.launch(Dispatchers.Main) {
+                    showShort("下载完成：$filePath")
                 }
 
             }
 
         } catch (e: Exception) {
-
+            GlobalScope.launch(Dispatchers.Main) {
+                showShort("下载失败：${e.message}")
+            }
             Log.i(TAG, "run: ${e.message}")
         }
 

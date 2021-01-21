@@ -9,4 +9,5 @@
     <item name="bottomNavigationView" type="id" />
     <item name="mToolbarView" type="id"/>
     <item name="toolbar" type="id"/>
+    <item name="mainTabLayout" type="id"/>
 </resources>

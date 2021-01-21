@@ -1,5 +1,6 @@
 package com.yang.common_lib.base.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -24,6 +25,7 @@ abstract class BaseLazyFragment : Fragment() {
 
     private var mView: View? = null
     private var isFirstLoad = true
+    lateinit var mContext: Context
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,6 +37,7 @@ abstract class BaseLazyFragment : Fragment() {
             if (setStatusPadding()) {
                 mView?.setPadding(0, getStatusBarHeight(requireActivity()), 0, 0)
             }
+            mContext = requireContext()
         }
         return mView
     }

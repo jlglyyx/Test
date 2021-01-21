@@ -21,6 +21,7 @@
             android:src="@mipmap/ic_launcher"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:padding="@dimen/dp_1"
             app:shapeAppearanceOverlay="@style/circleImageView" />
 
         <LinearLayout

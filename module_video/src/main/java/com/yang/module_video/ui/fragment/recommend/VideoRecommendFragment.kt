@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
+import android.widget.TableLayout
 import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -16,6 +17,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.scwang.smart.refresh.layout.api.RefreshLayout
@@ -38,7 +40,6 @@ import com.yang.module_video.ui.fragment.recommend.bean.RecommendTypeBean.Compan
 import com.yang.module_video.viewmodel.VideoViewModel
 import com.youth.banner.Banner
 import com.youth.banner.indicator.CircleIndicator
-import kotlinx.android.synthetic.main.activity_main.tabLayout
 import kotlinx.android.synthetic.main.item_recommend_big_img.img_video_start
 import kotlinx.android.synthetic.main.view_public_normal_recycler_view.*
 import javax.inject.Inject
@@ -54,7 +55,7 @@ import javax.inject.Inject
  * @Date 2020/12/1 16:04
  */
 @Route(path = RoutePath.VIDEO_RECOMMEND_FRAGMENT)
-class RecommendFragment : BaseLazyFragment() {
+class VideoRecommendFragment : BaseLazyFragment() {
 
     private lateinit var videoViewModel: VideoViewModel
 
@@ -66,9 +67,9 @@ class RecommendFragment : BaseLazyFragment() {
     @Inject
     lateinit var gson: Gson
 
-    var space:Int = 0
+    var space: Int = 0
 
-    lateinit var videoAdapter:VideoAdapter
+    lateinit var videoAdapter: VideoAdapter
 
 
     override fun getLayout(): Int {
@@ -77,7 +78,7 @@ class RecommendFragment : BaseLazyFragment() {
     }
 
     override fun initView() {
-        space = dip2px(requireContext(),6f)
+        space = dip2px(requireContext(), 6f)
 
 
         initRecyclerView()
@@ -95,26 +96,27 @@ class RecommendFragment : BaseLazyFragment() {
             getRemoteComponent()
         ).build().inject(this)
 
-        videoViewModel = ViewModelProvider(this, videoViewModelFactory).get(VideoViewModel::class.java)
+        videoViewModel =
+            ViewModelProvider(this, videoViewModelFactory).get(VideoViewModel::class.java)
     }
 
     private fun initRecyclerView() {
 
 
-        with(videoViewModel.recommendTypeBeans.value!!){
+        with(videoViewModel.recommendTypeBeans.value!!) {
             videoAdapter = VideoAdapter(mutableListOf())
             Log.i("===TAG===", "initRecyclerView: ${gson.toJson(this)}")
         }
 
         recyclerView.adapter = videoAdapter
-        gridLayoutManager = GridLayoutManager(requireContext(),4)
-        gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
+        gridLayoutManager = GridLayoutManager(requireContext(), 4)
+        gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
-                if (position == 0){//view的下标为0
-                    return  4
+                if (position == 0) {//view的下标为0
+                    return 4
                 }
-                val recommendTypeBean = videoAdapter.data[position-1]//view的下标为1 但是data得的为0
-                return when(recommendTypeBean.itemType){
+                val recommendTypeBean = videoAdapter.data[position - 1]//view的下标为1 但是data得的为0
+                return when (recommendTypeBean.itemType) {
                     TITLE_CODE -> 4
                     BIG_IMG_CODE -> 4
                     SMART_IMG_CODE -> 2
@@ -127,8 +129,8 @@ class RecommendFragment : BaseLazyFragment() {
         recyclerView.layoutManager = gridLayoutManager
         videoAdapter.setOnItemClickListener { adapter, view, position ->
             val any = adapter.data[position] as RecommendTypeBean
-            when(any.itemType){
-                TITLE_CODE ->{
+            when (any.itemType) {
+                TITLE_CODE -> {
                     showShort(position)
                 }
 //                BIG_IMG_CODE ->{
@@ -139,14 +141,15 @@ class RecommendFragment : BaseLazyFragment() {
 //                    )
 //                    ActivityCompat.startActivity(requireContext(),Intent(requireContext(),VideoPlayActivity::class.java).putExtra("recommendTypeBean",gson.toJson(any)),toBundle.toBundle())
 //                }
-                else ->{
+                else -> {
                     val toBundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
                         requireActivity(),
                         img_video_start,
                         "s"
                     )
                     //ActivityCompat.startActivity(requireContext(),Intent(requireContext(),VideoPlayActivity::class.java).putExtra("recommendTypeBean",gson.toJson(any)),toBundle.toBundle())
-                    ARouter.getInstance().build(RoutePath.VIDEO_VIDEO_PLAY_ACTIVITY).withString("recommendTypeBean",gson.toJson(any)).navigation()
+                    ARouter.getInstance().build(RoutePath.VIDEO_VIDEO_PLAY_ACTIVITY)
+                        .withString("recommendTypeBean", gson.toJson(any)).navigation()
 
                 }
             }
@@ -155,7 +158,7 @@ class RecommendFragment : BaseLazyFragment() {
 
 
 
-        recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration(){
+        recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
             override fun getItemOffsets(
                 outRect: Rect,
                 view: View,
@@ -164,45 +167,44 @@ class RecommendFragment : BaseLazyFragment() {
             ) {
                 super.getItemOffsets(outRect, view, parent, state)
                 val position = parent.getChildAdapterPosition(view)
-                if (position == -1 || position == 0){
+                if (position == -1 || position == 0) {
                     return
                 }
-                val recommendTypeBean = videoAdapter.data[position-1]
-                when(recommendTypeBean.itemType){
-                    SMART_IMG_CODE ->{
-                        if (position%2==0){
-                            outRect.left = space/2
-                        }else {
-                            outRect.right = space/2
+                val recommendTypeBean = videoAdapter.data[position - 1]
+                when (recommendTypeBean.itemType) {
+                    SMART_IMG_CODE -> {
+                        if (position % 2 == 0) {
+                            outRect.left = space / 2
+                        } else {
+                            outRect.right = space / 2
                         }
                     }
                 }
             }
         })
 
-        activity?.tabLayout.let {
-            it?.post {
+        activity?.findViewById<TabLayout>(R.id.mainTabLayout)?.let {
+            it.post {
                 val layoutParams = recyclerView.layoutParams as SmartRefreshLayout.LayoutParams
-                layoutParams.bottomMargin = it.height+ dip2px(requireContext(),20f)
+                layoutParams.bottomMargin = it.height + dip2px(requireContext(), 20f)
                 recyclerView.layoutParams = layoutParams
             }
         }
 
     }
 
-    private fun initBanner(){
+    private fun initBanner() {
 
         val mutableListOf = mutableListOf<BannerBean>()
-        for (i in 0..10){
+        for (i in 0..10) {
             mutableListOf.add(BannerBean("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1606987532332&di=2bed80227783721facc3aed8ce5c11ac&imgtype=0&src=http%3A%2F%2Fimg.pptjia.com%2Fimage%2F20180711%2F6e2198894a3107f377c490569fa2650c.JPG"))
         }
 
         val view = LayoutInflater.from(requireContext()).inflate(R.layout.view_banner, null, false)
-        val banner = view.findViewById<Banner<*,*>>(R.id.banner)
+        val banner = view.findViewById<Banner<*, *>>(R.id.banner)
         banner.addBannerLifecycleObserver(this)
             .setAdapter(MBannerAdapter(mutableListOf)).indicator = CircleIndicator(requireContext())
         videoAdapter.addHeaderView(view)
-
 
 
     }
@@ -212,16 +214,16 @@ class RecommendFragment : BaseLazyFragment() {
             if (refreshLayout.isRefreshing) {
                 refreshLayout.finishRefresh()
                 videoAdapter.replaceData(it)
-            }else if (refreshLayout.isLoading) {
+            } else if (refreshLayout.isLoading) {
                 refreshLayout.finishLoadMore()
                 videoAdapter.addData(it)
-            }else{
+            } else {
                 videoAdapter.replaceData(it)
             }
         })
     }
 
-    private fun initSmartRefreshLayout(){
+    private fun initSmartRefreshLayout() {
         refreshLayout.setOnRefreshLoadMoreListener(object : OnRefreshLoadMoreListener {
             override fun onLoadMore(refreshLayout: RefreshLayout) {
                 getRecommendList()
@@ -234,7 +236,7 @@ class RecommendFragment : BaseLazyFragment() {
         })
 
         videoViewModel.refresh.observe(this, Observer {
-            if (!it){
+            if (!it) {
                 if (refreshLayout.isRefreshing) {
                     refreshLayout.finishRefresh()
                 }
@@ -247,23 +249,24 @@ class RecommendFragment : BaseLazyFragment() {
     }
 
 
-    inner class VideoAdapter(data: MutableList<RecommendTypeBean>?) : BaseMultiItemQuickAdapter<RecommendTypeBean, BaseViewHolder>(data) {
+    inner class VideoAdapter(data: MutableList<RecommendTypeBean>?) :
+        BaseMultiItemQuickAdapter<RecommendTypeBean, BaseViewHolder>(data) {
 
         init {
-            addItemType(TITLE_CODE,R.layout.item_recommend_title)
-            addItemType(BIG_IMG_CODE,R.layout.item_recommend_big_img)
-            addItemType(SMART_IMG_CODE,R.layout.item_recommend_smart_img)
+            addItemType(TITLE_CODE, R.layout.item_recommend_title)
+            addItemType(BIG_IMG_CODE, R.layout.item_recommend_big_img)
+            addItemType(SMART_IMG_CODE, R.layout.item_recommend_smart_img)
         }
 
 
         override fun convert(holder: BaseViewHolder, item: RecommendTypeBean) {
 
 
-            when(item.itemType){
-                TITLE_CODE ->{
-                    holder.setText(R.id.img_video_type,item.type)
+            when (item.itemType) {
+                TITLE_CODE -> {
+                    holder.setText(R.id.img_video_type, item.type)
                 }
-                BIG_IMG_CODE ->{
+                BIG_IMG_CODE -> {
                     //holder.setText(R.id.img_video_desc,item.desc)
                     //holder.setText(R.id.img_video_title,item.title)
                     val view = holder.getView<ImageView>(R.id.img_video_start)
@@ -275,7 +278,7 @@ class RecommendFragment : BaseLazyFragment() {
                         .load(item.url)
                         .into(view)
                 }
-                else ->{
+                else -> {
                     //holder.setText(R.id.img_video_desc,item.desc)
                     //holder.setText(R.id.img_video_title,item.title)
                     val view = holder.getView<ImageView>(R.id.img_video_start)
@@ -285,7 +288,6 @@ class RecommendFragment : BaseLazyFragment() {
                         .into(view)
                 }
             }
-
 
 
         }

@@ -36,19 +36,20 @@ object RoutePath {
 
     //home fragment
     const val HOME_FRAGMENT = "/$MODULE_HOME/$FRAGMENT/HomeFragment"
-    const val HOME_RECOMMEND_FRAGMENT = "/$MODULE_HOME/$FRAGMENT/RecommendFragment"
+    const val HOME_RECOMMEND_FRAGMENT = "/$MODULE_HOME/$FRAGMENT/HomeRecommendFragment"
 
     //home activity
 
     //picture fragment
     const val PICTURE_FRAGMENT = "/$MODULE_PICTURE/$FRAGMENT/HomeFragment"
-    const val PICTURE_RECOMMEND_FRAGMENT = "/$MODULE_PICTURE/$FRAGMENT/RecommendFragment"
+    const val PICTURE_RECOMMEND_FRAGMENT = "/$MODULE_PICTURE/$FRAGMENT/PictureRecommendFragment"
 
     //picture activity
+    const val PICTURE_PICTURE_DESC_ACTIVITY = "/$MODULE_PICTURE/$ACTIVITY/PictureDescActivity"
 
     //video fragment
     const val VIDEO_FRAGMENT = "/$MODULE_VIDEO/$FRAGMENT/VideoFragment"
-    const val VIDEO_RECOMMEND_FRAGMENT = "/$MODULE_VIDEO/$FRAGMENT/RecommendFragment"
+    const val VIDEO_RECOMMEND_FRAGMENT = "/$MODULE_VIDEO/$FRAGMENT/VideoRecommendFragment"
 
     //home activity
     const val VIDEO_VIDEO_PLAY_ACTIVITY = "/$MODULE_VIDEO/$ACTIVITY/VideoPlayActivity"
